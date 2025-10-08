@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- acá se definen los "themes", temas que usa la app, un tema sería una plantilla de como se ve. -->
+<resources>
+
+    <style name="Theme.panaderia" parent="android:Theme.Material.Light.NoActionBar" />
+    
+    <!-- mis temas -->
+    <!-- Tema de mi spashScreen -->
+    <style name="Theme.MiSplashScreen" parent="Theme.SplashScreen">
+        <!-- Definimos el color de fondo -->
+        <item name="windowSplashScreenBackground">@color/mostaza</item>
+        <!-- Agregamos el icono -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/marraqueta</item>
+        <!-- Le decimos al programa que ocurre cuando este theme se va, vovemos al theme por default -->
+        <item name="postSplashScreenTheme">@style/Theme.panaderia</item>
+    </style>
+</resources>
