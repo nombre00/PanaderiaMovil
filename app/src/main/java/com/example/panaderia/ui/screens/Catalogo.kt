@@ -49,8 +49,16 @@ fun CatalogoScaffold(){
     // Por ahora creamos una lista de obejtos acá, despues vamos a referenciar local Storage.
     val productos = mutableListOf<Producto>()
     // Creamos y agregamos los productos a la lista.
-    productos.add(Producto("kuchen_M", "Kuchen de manzana", 19000.0, "https://cdn0.recetasgratis.net/es/posts/2/9/2/kuchen_de_manzana_facil_y_rapido_45292_orig.jpg"))
-    productos.add(Producto("mil_hoja", "Torta de Milhoja", 16000.0, "https://cdn0.recetasgratis.net/es/posts/8/0/2/torta_milhojas_24208_orig.jpg"))
+    productos.add(Producto("kuchen_M", "Kuchen de manzana", 19000, "https://cdn0.recetasgratis.net/es/posts/2/9/2/kuchen_de_manzana_facil_y_rapido_45292_orig.jpg"))
+    productos.add(Producto("mil_hoja", "Torta de Milhoja", 16000, "https://cdn0.recetasgratis.net/es/posts/8/0/2/torta_milhojas_24208_orig.jpg"))
+    productos.add(Producto("strudel", "Strudel de manzana", 21000, "https://www.puffpastry.com/wp-content/uploads/2017/02/BH_7284.jpg"))
+    productos.add(Producto("t_3_leches", "Torta tres leches", 18000, "https://wattsindustrial.cl/wp-content/uploads/2023/03/tortatresleches-min.jpeg"))
+    productos.add(Producto("p_limon", "Pie de limón", 18000, "https://images.unsplash.com/photo-1681329142517-6daaa56d3670?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))
+    productos.add(Producto("kuchen_n", "Kuchen de nuez", 17000, "https://i0.wp.com/entreparrilleros.cl/wp-content/uploads/2024/02/Kuchen-de-nuez.png?fit=1080%2C1080&ssl=1"))
+    productos.add(Producto("s_negra", "Selva negra", 16000, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkQeC-bVK7OKElOTJwbTTya0dxXdGm3iqBJA&s"))
+    productos.add(Producto("t_choco", "Torta de Chocolate", 15000, "https://amoradulce.com/wp-content/uploads/2019/12/Torta-chocolate-1_04_13_2024-scaled.jpg"))
+    productos.add(Producto("t_cafe", "Torta de Café", 15000, "https://www.littlesugarsnaps.com/wp-content/uploads/2021/05/Coffee-Flavoured-Cake-Featured-Image-8692.jpg"))
+    productos.add(Producto("c_volteada", "Crema Volteada", 14000, "https://dellepiane.pe/wp-content/uploads/2023/08/crema-volteada-001.jpg"))
 
     Scaffold(
         // Footer.
@@ -64,14 +72,17 @@ fun CatalogoScaffold(){
             )
             {
                 // Imagen de fondo.
-                ImagenFondo(
-                    modifier = Modifier.padding(paddingValues)
-                )
-                // Título de la pagina
-                Titulo(titulo = "Catálogo")
+                ImagenFondo(modifier = Modifier.padding(paddingValues))
+
+                Column{
+                    // Título de la pagina
+                    Titulo(titulo = "Catálogo")
+
+                    // Lista. (Puede que falte algo, un cuadro transparente para separar la lista del fondo).
+                    ListaCatalogo(productos)
+                }
             }
-            // Lista. (Puede que falte algo, un cuadro transparente para separar la lista del fondo).
-            ListaCatalogo(productos)
+
         }
     )
 }

@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.cursojetpack_1"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.entity.extraction)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -63,4 +64,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android) // Para coroutines
     implementation(libs.androidx.navigation.compose)  // Para navegar entre paginas
     implementation(libs.coil.compose)  // Para manejar urls
+
+    implementation(libs.room.runtime) // Room Runtime
+    implementation(libs.room.ktx) // Room KTX para soporte de Kotlin y corutinas
 }
