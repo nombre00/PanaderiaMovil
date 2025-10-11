@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState  // Para hacer scroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll  // Para hacer scroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,7 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.panaderia.model.Producto
+import com.example.panaderia.ui.theme.AzulPastel
 import com.example.panaderia.ui.theme.LilaPastel
+import com.example.panaderia.ui.theme.Purple40
+import com.example.panaderia.ui.theme.RojoPastel
 import com.example.panaderia.viewmodel.CatalogoViewModel
 
 
@@ -79,6 +85,22 @@ fun ListaCatalogo(productos: List<Producto>, viewModel: CatalogoViewModel = view
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
                         )
+                        Box(
+                            modifier = Modifier
+                                .size(width = 160.dp, height = 60.dp),
+                            contentAlignment = Alignment.BottomCenter
+                        ){
+                            Button(
+                                // El escuchador
+                                onClick = {},
+                                shape = RoundedCornerShape(size = 6.dp),
+                                colors = ButtonDefaults.buttonColors(containerColor = Purple40),
+
+                                ) {
+                                // Texto dentro del boton.
+                                Text(text = "Agregar producto al carrito")
+                            }
+                        }
                     }
                 }
             }

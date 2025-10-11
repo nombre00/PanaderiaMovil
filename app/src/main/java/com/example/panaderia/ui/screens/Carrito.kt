@@ -10,16 +10,15 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.room.util.TableInfo
 import com.example.panaderia.model.Producto
-import com.example.panaderia.ui.components.Footer
 import com.example.panaderia.ui.components.ImagenFondo
 import com.example.panaderia.ui.components.ListaCarrito
 import com.example.panaderia.ui.components.Titulo
-import com.example.panaderia.viewmodel.InicioViewModel
 import com.example.panaderia.ui.theme.panaderia
+import com.example.panaderia.viewmodel.CarritoViewModel
 
 
 @Composable
-fun Carrito(viewModel: InicioViewModel = viewModel()){
+fun Carrito(viewModel: CarritoViewModel = viewModel()){
 
     panaderia(){
         CarritoScaffold()
@@ -38,8 +37,6 @@ fun CarritoScaffold(){
 
 
     Scaffold(
-        // Footer.
-        bottomBar = { Footer() },
         // Caja que contiene la imagen de fondo.
         content = { paddingValues ->
             Box(
