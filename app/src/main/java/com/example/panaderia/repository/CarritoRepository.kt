@@ -23,10 +23,10 @@ val CARRITOS_LLAVE = stringPreferencesKey("base de datos carritos")
 
 
 // Funcion (con corrutinas) para almacenar el carrito en el local storage.
-suspend fun guardarCarrito(context: Context, carrito: Carrito){
+suspend fun guardarCarrito(context: Context, carritos: List<Carrito>){
 
     // Creamos una variable que guarda los datos de un carrito.
-    val json = SerializarCarrito(carrito)
+    val json = SerializarCarrito(carritos)
 
     // Guardamos los datos en el local storage.
     // Editamos el local storage.
@@ -40,7 +40,7 @@ suspend fun guardarCarrito(context: Context, carrito: Carrito){
 
 // Funcion que obtiene la lista de carritos del local storage.
 // Flow permite leer los datos, esto es usado en el componente.
-fun leerCarrtios(context: Context): Flow<List<Carrito>> {
+fun leerCarritos(context: Context): Flow<List<Carrito>> {
     // Retorna un mapa del contexto.
     return context.dataStore2.data.map { preferences ->
         // Creamos una variable que contiene los datos de la base de datos llamada por su llave

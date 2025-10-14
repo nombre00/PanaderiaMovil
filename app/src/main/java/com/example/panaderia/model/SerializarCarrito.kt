@@ -7,8 +7,8 @@ import com.google.gson.reflect.TypeToken
 // Este archivo sirve para trabajar el JSON que va a guardar y leer los carritos del local storage,
 
 // Serializar lista de Carrito, retorna un JSON como string.
-fun SerializarCarrito(carrito: Carrito): String{
-    return Gson().toJson(carrito)
+fun SerializarCarrito(carritos: List<Carrito>): String{
+    return Gson().toJson(carritos)
 }
 
 // Desserializar Carritos.

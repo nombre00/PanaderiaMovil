@@ -11,11 +11,11 @@ import com.example.panaderia.ui.components.Footer
 import com.example.panaderia.ui.components.ImagenFondo
 import com.example.panaderia.ui.components.Titulo
 import com.example.panaderia.ui.theme.panaderia
-import com.example.panaderia.viewmodel.InicioViewModel
+import com.example.panaderia.viewmodel.LoginViewModel
 
 
 @Composable
-fun Login(viewModel: InicioViewModel = viewModel()){
+fun Login(viewModel: LoginViewModel = viewModel()){
     panaderia(){
         LoginScaffold()
     }

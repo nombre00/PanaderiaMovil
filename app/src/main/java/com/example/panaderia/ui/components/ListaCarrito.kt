@@ -1,5 +1,7 @@
 package com.example.panaderia.ui.components
 
+import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -18,6 +21,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,22 +35,24 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.room.util.TableInfo
 import coil.compose.rememberAsyncImagePainter
+import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.Producto
+import com.example.panaderia.repository.guardarCarrito
+import com.example.panaderia.repository.leerCarritos
 import com.example.panaderia.ui.theme.AzulPastel
 import com.example.panaderia.ui.theme.LilaPastel
 import com.example.panaderia.ui.theme.Purple40
 import com.example.panaderia.ui.theme.RojoPastel
 import com.example.panaderia.ui.theme.VerdePastel
 import com.example.panaderia.viewmodel.CarritoViewModel
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun ListaCarrito( productos: List<Producto>, viewModel: CarritoViewModel = viewModel()){
+fun ListaCarrito(carrito: Carrito, viewModel: CarritoViewModel = viewModel(), precio: Int){
 
     // Como la lista de carrito va a contener botones y los botones requieren del contexto de la pagina, vamos a crear una variable que reciba el contexto.
     val contexto = LocalContext.current.applicationContext
-    // Variable que contiene el precio del carrito.
-    val precio = 0
 
     // Contenedor exterior para centrar.
     Box(
@@ -91,10 +99,8 @@ fun ListaCarrito( productos: List<Producto>, viewModel: CarritoViewModel = viewM
 
             }
 
-
-
             // Por cada producto dentro del carrito tenemos una fila con los datos del producto.
-            for (p in productos){
+            carrito.productos.forEach { p ->
                 Column{
                     // Imagen.
                     Image(
@@ -122,44 +128,67 @@ fun ListaCarrito( productos: List<Producto>, viewModel: CarritoViewModel = viewM
                     }
                     // Tambien van botones, los botones deben ir dentro de un contenedor para manejar su tamaño.
                     // Boton aumentar cantidad del producto en carrito.
-                    Column(
-                        modifier = Modifier
-                            .size(width = 200.dp, height = 50.dp)
-                            .padding(6.dp)
-                    ){
-                        Button(
-                            // El escuchador
-                            onClick = {},
-                            shape = RoundedCornerShape(size = 4.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = AzulPastel)
-
-                        ) {
-                            // Texto dentro del boton.
-                            Text(text = "sumar 1 a la cantidad")
-                        }
-                    }
+                    BotonAgregar()
                     // Boton eliminar del carrito.
-                    Column(
-                        modifier = Modifier
-                            .size(width = 200.dp, height = 50.dp)
-                            .padding(6.dp)
-                    ){
-                        Button(
-                            // El escuchador
-                            onClick = {},
-                            shape = RoundedCornerShape(size = 4.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = RojoPastel),
-
-                            ) {
-                            // Texto dentro del boton.
-                            Text(text = "Eliminar producto")
-                        }
-                    }
+                    BotonEliminar(p, viewModel)
                 }
             }
-
-            // Bajo la lista va un boton comprar.
-
         }
     }
 }
+
+
+
+// Funcion que crea el boton eliminar.
+@Composable
+fun BotonEliminar(producto: Producto, viewModel: CarritoViewModel){
+
+    // Creamos una variable para manejar el contexto donde se encuentra el botón,
+    val contexto = LocalContext.current.applicationContext
+
+    Column(
+        modifier = Modifier
+            .size(width = 200.dp, height = 50.dp)
+            .padding(6.dp)
+    ){
+        Button(
+            // El escuchador
+            onClick = {
+                // Toast es un mensaje que aparece.
+                Toast.makeText(contexto, "Producto eliminado del carrito.", Toast.LENGTH_SHORT).show()
+
+                // Eliminar el producto del carrito llamando a la funcion desde viewmodel.
+                viewModel.eliminarProductoCarrito(contexto, producto.id)
+
+            },
+            shape = RoundedCornerShape(size = 4.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = RojoPastel),
+
+            ) {
+            // Texto dentro del boton.
+            Text(text = "Eliminar producto")
+        }
+    }
+}
+
+// Funcion que crea el boton agregar.
+@Composable
+fun BotonAgregar(){
+    Column(
+        modifier = Modifier
+            .size(width = 200.dp, height = 50.dp)
+            .padding(6.dp)
+    ){
+        Button(
+            // El escuchador
+            onClick = {},
+            shape = RoundedCornerShape(size = 4.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = AzulPastel)
+
+        ) {
+            // Texto dentro del boton.
+            Text(text = "sumar 1 a la cantidad")
+        }
+    }
+}
+

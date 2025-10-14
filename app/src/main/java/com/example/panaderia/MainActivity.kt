@@ -37,19 +37,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.panaderia.model.Producto
 
-import com.example.panaderia.ui.screens.Carrito
+import com.example.panaderia.ui.screens.GestionCarrito
 import com.example.panaderia.ui.screens.Catalogo
 import com.example.panaderia.ui.screens.Inicio
 import com.example.panaderia.ui.screens.Perfil
 import com.example.panaderia.ui.theme.panaderia
+import com.example.panaderia.viewmodel.CarritoViewModel
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         // Todo va despues de la línea de abajo, sino nos aparecen llamadas a componentes nulos.
         super.onCreate(savedInstanceState)
+
+
 
 
 
@@ -139,7 +143,10 @@ class MainActivity : ComponentActivity() {
                         ){
                             composable("Inicio") { Inicio() }
                             composable("Catalogo") { Catalogo() }
-                            composable( "Carrito") { Carrito() }
+                            composable( "Carrito") { backStackEntry ->
+                                val viewModel: CarritoViewModel = viewModel(backStackEntry)
+                                GestionCarrito(viewModel = viewModel, idCarrito = "1")
+                            }
                             composable("Perfil") { Perfil() }
                         }
                     }

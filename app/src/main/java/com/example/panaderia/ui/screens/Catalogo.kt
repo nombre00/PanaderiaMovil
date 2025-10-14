@@ -25,7 +25,6 @@ import com.example.panaderia.ui.components.ListaCatalogo
 import com.example.panaderia.ui.components.Titulo
 import com.example.panaderia.ui.theme.panaderia
 import com.example.panaderia.viewmodel.CatalogoViewModel
-import com.example.panaderia.viewmodel.InicioViewModel
 
 
 @Composable

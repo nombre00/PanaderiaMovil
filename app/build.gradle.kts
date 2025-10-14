@@ -69,4 +69,9 @@ dependencies {
     implementation(libs.room.ktx) // Room KTX para soporte de Kotlin y corutinas
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.gson) // Para serialización a JSON
+
+    implementation(libs.androidx.lifecycle.viewmodel.compose.v287)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.androidx.datastore.preferences.v111)
 }
