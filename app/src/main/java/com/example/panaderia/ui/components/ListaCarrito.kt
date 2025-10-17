@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
@@ -39,6 +40,7 @@ import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.Producto
 import com.example.panaderia.repository.guardarCarrito
 import com.example.panaderia.repository.leerCarritos
+import com.example.panaderia.ui.theme.Azul1
 import com.example.panaderia.ui.theme.AzulPastel
 import com.example.panaderia.ui.theme.LilaPastel
 import com.example.panaderia.ui.theme.Purple40
@@ -64,8 +66,9 @@ fun ListaCarrito(carrito: Carrito, viewModel: CarritoViewModel = viewModel(), pr
         // Contenedor interior para ordenar verticalmente.
         Column(
             modifier = Modifier
-                .background(LilaPastel)
+                .background(Color.White)
                 .padding(16.dp)
+                .clip(RoundedCornerShape(6.dp))
                 .verticalScroll(rememberScrollState()), // Para hacer scroll.
             horizontalAlignment = Alignment.Start
         ) {
@@ -107,8 +110,9 @@ fun ListaCarrito(carrito: Carrito, viewModel: CarritoViewModel = viewModel(), pr
                         painter = rememberAsyncImagePainter(p.url), // Referenciamos el url del producto actual.
                         contentDescription = null,
                         modifier = Modifier
-                            .size(width = 300.dp, height = 240.dp) // Seteamos el tamaño.
+                            .size(width = 340.dp, height = 280.dp) // Seteamos el tamaño.
                             .padding(6.dp)
+                            .clip(RoundedCornerShape(24.dp))
                             .background(color = Color.White),
                         contentScale = ContentScale.Crop
                     )
@@ -127,8 +131,6 @@ fun ListaCarrito(carrito: Carrito, viewModel: CarritoViewModel = viewModel(), pr
                         )
                     }
                     // Tambien van botones, los botones deben ir dentro de un contenedor para manejar su tamaño.
-                    // Boton aumentar cantidad del producto en carrito.
-                    BotonAgregar()
                     // Boton eliminar del carrito.
                     BotonEliminar(p, viewModel)
                 }
@@ -159,10 +161,9 @@ fun BotonEliminar(producto: Producto, viewModel: CarritoViewModel){
 
                 // Eliminar el producto del carrito llamando a la funcion desde viewmodel.
                 viewModel.eliminarProductoCarrito(contexto, producto.id)
-
             },
-            shape = RoundedCornerShape(size = 4.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = RojoPastel),
+            shape = RoundedCornerShape(size = 8.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Azul1),
 
             ) {
             // Texto dentro del boton.
@@ -171,24 +172,4 @@ fun BotonEliminar(producto: Producto, viewModel: CarritoViewModel){
     }
 }
 
-// Funcion que crea el boton agregar.
-@Composable
-fun BotonAgregar(){
-    Column(
-        modifier = Modifier
-            .size(width = 200.dp, height = 50.dp)
-            .padding(6.dp)
-    ){
-        Button(
-            // El escuchador
-            onClick = {},
-            shape = RoundedCornerShape(size = 4.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = AzulPastel)
-
-        ) {
-            // Texto dentro del boton.
-            Text(text = "sumar 1 a la cantidad")
-        }
-    }
-}
 

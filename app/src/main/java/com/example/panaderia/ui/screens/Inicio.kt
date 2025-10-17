@@ -18,8 +18,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -28,34 +31,42 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.Producto
 import com.example.panaderia.repository.guardarCarrito
 import com.example.panaderia.repository.guardarCatalogo
+import com.example.panaderia.ui.components.Carrusel
+import com.example.panaderia.ui.components.CarruselCafe
 import com.example.panaderia.ui.components.Footer
 import com.example.panaderia.ui.components.ImagenFondo
-import com.example.panaderia.ui.components.ImagenesAnimables
+import com.example.panaderia.ui.components.Nosotros
+import com.example.panaderia.ui.components.PromocionDia
 import com.example.panaderia.ui.components.Titulo
+import com.example.panaderia.ui.theme.Azul2
+import com.example.panaderia.ui.theme.Rojo1
+import com.example.panaderia.ui.theme.Verde1
 import kotlinx.coroutines.launch
 
 @Composable
 fun Inicio(viewModel: InicioViewModel = viewModel()) {
-    // Estado de la pagina (creo que se usa para comunicarse con otros componentes)
-    val mensaje by viewModel.message.collectAsState() // Observa el estado
+
 
     panaderia {
-       InicioScaffold()
+       InicioScaffold(viewModel)
     }
 }
 
 // Funcion que crea el scaffold.
 @Composable
-fun InicioScaffold(){
+fun InicioScaffold(viewModel: InicioViewModel){
     Scaffold(
-        // Footer.
-        bottomBar = { Footer() },
         // Caja que contiene la imagen de fondo.
         content = { paddingValues ->
             Box(
@@ -67,34 +78,68 @@ fun InicioScaffold(){
                 ImagenFondo(
                     modifier = Modifier.padding(paddingValues)
                 )
-
-
-
                 // Columna para ordenar.
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp),
+                        .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-
-
-
-
-
-
-
-
                     // Contenido visual de la pagina.
                     // Que queremos mostrar.
                     // Productos: Un contenedor con imagenes animables.
                     // Ofertas:
                     // Fechas importantes:
                     // contenido que va encima de la imagen.
-                    Titulo(titulo = "Inicio")
+                    //Titulo(titulo = "Inicio")
 
-                    ImagenesAnimables()
+                    Text(text = "Panes del mes",
+                        modifier = Modifier
+                            .background(color = Color.White)
+                            .fillMaxWidth()
+                            .padding(4.dp),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                        color = Verde1
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Carrusel()
+
+                    Spacer(modifier = Modifier.height(40.dp))
+
+                    PromocionDia()
+
+                    Spacer(modifier = Modifier.height(40.dp))
+
+                    Text(text = "Cafes de la casa",
+                        modifier = Modifier
+                            .background(color = Color.White)
+                            .fillMaxWidth()
+                            .padding(4.dp),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                        color = Verde1
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    CarruselCafe()
+
+                    Spacer(modifier = Modifier.height(40.dp))
+
+                    Text(text = "Nosotros",
+                        modifier = Modifier
+                            .background(color = Color.White)
+                            .fillMaxWidth()
+                            .padding(4.dp),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 32.sp,
+                        color = Verde1
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Nosotros()
 
 
 
@@ -141,6 +186,7 @@ fun InicioScaffold(){
                             }
                         }) { Text("Cargar base de datos") }
                     }
+                    Footer()
                 }
             }
         }
