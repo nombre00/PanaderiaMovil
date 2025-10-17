@@ -27,7 +27,7 @@ fun Nosotros(){
         Image(
             painter = rememberAsyncImagePainter("https://i.pinimg.com/474x/a8/5f/4f/a85f4f28ea00e956e9905a23db8efb44.jpg"),
             contentDescription = null,
-            modifier = Modifier.size(width = 360.dp, height = 440.dp),
+            modifier = Modifier.size(width = 360.dp, height = 440.dp).clip(RoundedCornerShape(24.dp)),
             contentScale = ContentScale.Crop  // Ajusta la imagen al contenedor.)
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -42,7 +42,7 @@ fun Nosotros(){
         Image(
             painter = rememberAsyncImagePainter("https://enterreno.s3.us-east-2.amazonaws.com/moments/5372_calle-valparaiso-de-via-del-mar-en-1925.jpg"),
             contentDescription = null,
-            modifier = Modifier.size(width = 360.dp, height = 440.dp),
+            modifier = Modifier.size(width = 360.dp, height = 440.dp).clip(RoundedCornerShape(24.dp)),
             contentScale = ContentScale.Crop  // Ajusta la imagen al contenedor.)
         )
     }

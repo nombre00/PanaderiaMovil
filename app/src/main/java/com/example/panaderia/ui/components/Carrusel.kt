@@ -44,10 +44,10 @@ fun Carrusel() {
             Image(
                 painter = painterResource(
                     id = when (pagina){
-                        0 -> R.drawable.mediaslunas
+                        0 -> R.drawable.marraquetas
                         1 -> R.drawable.pandehuevo
                         2 -> R.drawable.dobladitas
-                        else -> R.drawable.marraquetas
+                        else -> R.drawable.mediaslunas
                     }
                 ),
                 contentDescription = null,

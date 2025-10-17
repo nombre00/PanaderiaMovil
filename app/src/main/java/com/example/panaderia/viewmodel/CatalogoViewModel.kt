@@ -25,6 +25,14 @@ class CatalogoViewModel: ViewModel() {
     private val _carritos = MutableStateFlow<List<Carrito>>(emptyList())
     val carrito: StateFlow<List<Carrito>> = _carritos.asStateFlow()
 
+    // Estado de la categoria seleccionada.
+    private val _categoriaProducto = MutableStateFlow<String?>(null)
+    val categoriaProducto: StateFlow<String?> = _categoriaProducto.asStateFlow()
+
+    // Estado de los productos filtrados.
+    private val _productosFiltrados = MutableStateFlow<List<Producto>>(emptyList())
+    val productosFiltrados: StateFlow<List<Producto>> = _productosFiltrados.asStateFlow()
+
 
 
 
@@ -69,6 +77,22 @@ class CatalogoViewModel: ViewModel() {
             } else {
                 Toast.makeText(contexto, "Inicie sesión para agregar un producto.", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+
+    // Funcion que cambia el estado de la categoria seleccionada.
+    fun cambiarSeleccionProductos(categoria: String){
+        _categoriaProducto.value = categoria
+        filtarProductos()
+    }
+
+    // Funcion que filtra los productos por categoria.
+    fun filtarProductos(){
+        _productosFiltrados.value = if (_categoriaProducto.value == "") { // Si la categoria seleccionada es nula
+            _catalogo.value // mostramos todos cuando no se selecciona una categoria
+        } else {
+            _catalogo.value.filter { it.categoria == _categoriaProducto.value } // Sino filtramos por categoria.
         }
     }
 }

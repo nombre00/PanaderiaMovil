@@ -24,6 +24,7 @@ import com.example.panaderia.model.Producto
 import com.example.panaderia.repository.leerCatalogoLS
 import com.example.panaderia.ui.components.ImagenFondo
 import com.example.panaderia.ui.components.ListaCatalogo
+import com.example.panaderia.ui.components.MenuProductos
 import com.example.panaderia.ui.components.Titulo
 import com.example.panaderia.ui.theme.panaderia
 import com.example.panaderia.viewmodel.CatalogoViewModel
@@ -44,7 +45,7 @@ fun CatalogoScaffold(viewModel: CatalogoViewModel){
     val contexto = LocalContext.current
 
     // Creamos una lista de productos que llama los datos del local storage.
-    val listaProductos by leerCatalogoLS(contexto).collectAsStateWithLifecycle(emptyList())
+    val listaProductos by viewModel.productosFiltrados.collectAsStateWithLifecycle()
 
 
     LaunchedEffect(Unit) {
@@ -69,6 +70,9 @@ fun CatalogoScaffold(viewModel: CatalogoViewModel){
                 Column{
                     // Título de la pagina
                     Titulo(titulo = "Catálogo")
+
+                    // Botones
+                    MenuProductos(viewModel)
 
                     // Lista. (Puede que falte algo, un cuadro transparente para separar la lista del fondo).
                     ListaCatalogo(listaProductos, viewModel)

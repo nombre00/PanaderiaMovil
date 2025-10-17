@@ -53,6 +53,7 @@ import com.example.panaderia.ui.theme.Azul2
 import com.example.panaderia.ui.theme.Rojo1
 import com.example.panaderia.ui.theme.Verde1
 import kotlinx.coroutines.launch
+import com.example.panaderia.R
 
 @Composable
 fun Inicio(viewModel: InicioViewModel = viewModel()) {
@@ -152,16 +153,27 @@ fun InicioScaffold(viewModel: InicioViewModel){
                     // Por ahora creamos una lista de obejtos acá, despues vamos a referenciar local Storage.
                     val productos = mutableListOf<Producto>()
                     // Creamos y agregamos los productos a la lista.
-                    productos.add(Producto("kuchen_M", "Kuchen de manzana", 19000, "https://cdn0.recetasgratis.net/es/posts/2/9/2/kuchen_de_manzana_facil_y_rapido_45292_orig.jpg"))
-                    productos.add(Producto("mil_hoja", "Torta de Milhoja", 16000, "https://cdn0.recetasgratis.net/es/posts/8/0/2/torta_milhojas_24208_orig.jpg"))
-                    productos.add(Producto("strudel", "Strudel de manzana", 21000, "https://www.puffpastry.com/wp-content/uploads/2017/02/BH_7284.jpg"))
-                    productos.add(Producto("t_3_leches", "Torta tres leches", 18000, "https://wattsindustrial.cl/wp-content/uploads/2023/03/tortatresleches-min.jpeg"))
-                    productos.add(Producto("p_limon", "Pie de limón", 18000, "https://images.unsplash.com/photo-1681329142517-6daaa56d3670?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))
-                    productos.add(Producto("kuchen_n", "Kuchen de nuez", 17000, "https://i0.wp.com/entreparrilleros.cl/wp-content/uploads/2024/02/Kuchen-de-nuez.png?fit=1080%2C1080&ssl=1"))
-                    productos.add(Producto("s_negra", "Selva negra", 16000, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkQeC-bVK7OKElOTJwbTTya0dxXdGm3iqBJA&s"))
-                    productos.add(Producto("t_choco", "Torta de Chocolate", 15000, "https://amoradulce.com/wp-content/uploads/2019/12/Torta-chocolate-1_04_13_2024-scaled.jpg"))
-                    productos.add(Producto("t_cafe", "Torta de Café", 15000, "https://www.littlesugarsnaps.com/wp-content/uploads/2021/05/Coffee-Flavoured-Cake-Featured-Image-8692.jpg"))
-                    productos.add(Producto("c_volteada", "Crema Volteada", 14000, "https://dellepiane.pe/wp-content/uploads/2023/08/crema-volteada-001.jpg"))
+                    // Tortas.
+                    productos.add(Producto("kuchen_M", "Kuchen de manzana", 19000, "https://cdn0.recetasgratis.net/es/posts/2/9/2/kuchen_de_manzana_facil_y_rapido_45292_orig.jpg", "torta"))
+                    productos.add(Producto("mil_hoja", "Torta de Milhoja", 16000, "https://cdn0.recetasgratis.net/es/posts/8/0/2/torta_milhojas_24208_orig.jpg", "torta"))
+                    productos.add(Producto("strudel", "Strudel de manzana", 21000, "https://www.puffpastry.com/wp-content/uploads/2017/02/BH_7284.jpg", "torta"))
+                    productos.add(Producto("t_3_leches", "Torta tres leches", 18000, "https://wattsindustrial.cl/wp-content/uploads/2023/03/tortatresleches-min.jpeg", "torta"))
+                    productos.add(Producto("p_limon", "Pie de limón", 18000, "https://images.unsplash.com/photo-1681329142517-6daaa56d3670?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", "torta"))
+                    productos.add(Producto("kuchen_n", "Kuchen de nuez", 17000, "https://i0.wp.com/entreparrilleros.cl/wp-content/uploads/2024/02/Kuchen-de-nuez.png?fit=1080%2C1080&ssl=1", "torta"))
+                    productos.add(Producto("s_negra", "Selva negra", 16000, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkQeC-bVK7OKElOTJwbTTya0dxXdGm3iqBJA&s", "torta"))
+                    productos.add(Producto("t_choco", "Torta de Chocolate", 15000, "https://amoradulce.com/wp-content/uploads/2019/12/Torta-chocolate-1_04_13_2024-scaled.jpg", "torta"))
+                    productos.add(Producto("t_cafe", "Torta de Café", 15000, "https://www.littlesugarsnaps.com/wp-content/uploads/2021/05/Coffee-Flavoured-Cake-Featured-Image-8692.jpg", "torta"))
+                    productos.add(Producto("c_volteada", "Crema Volteada", 14000, "https://dellepiane.pe/wp-content/uploads/2023/08/crema-volteada-001.jpg", "torta"))
+                    // Panes.
+                    productos.add(Producto("marraqueta", "Marraqueta", 300, "https://comerciante.lacuarta.com/wp-content/uploads/2022/05/Marraqueta-Tema-1-ok.jpg", "pan"))
+                    productos.add(Producto("panhuevo", "Pan de huevo", 300, "https://www.tipicochileno.cl/wp-content/uploads/2021/05/pan-de-huevo-1200-628.jpg", "pan"))
+                    productos.add(Producto("dobladita", "Dobladita de queso", 400, "https://tiendaelchileno.com/wp-content/uploads/2024/12/dobladita-pagina-web.jpeg", "pan"))
+                    productos.add(Producto("medialuna", "Medialuna", 600, "https://cocinerosargentinos.com/content/recipes/original/recipes.12138.jpeg", "pan"))
+                    // Cafes.
+                    productos.add(Producto("late", "Café latte", 2100, "https://images.ctfassets.net/0e6jqcgsrcye/53teNK4AvvmFIkFLtEJSEx/4d3751dcad227c87b3cf6bda955b1649/Cafe_au_lait.jpg", "cafe"))
+                    productos.add(Producto("americano", "Café americano", 1800, "https://excelso77.com/wp-content/uploads/2024/05/por-que-el-cafe-americano-se-llama-asi-te-lo-contamos.webp", "cafe"))
+                    productos.add(Producto("moca", "Café mocaccino", 2600, "https://www.cabucoffee.com/newimages/Cafe-Moca.jpg", "cafe"))
+                    productos.add(Producto("helado", "Café helado", 3200, "https://osterstatic.reciperm.com/webp/10230.webp", "cafe"))
 
                     // Creamos una variable para manipular el contexto local.
                     val contexto = LocalContext.current
