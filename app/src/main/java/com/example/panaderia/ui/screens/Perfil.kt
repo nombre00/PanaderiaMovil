@@ -11,11 +11,11 @@ import com.example.panaderia.ui.components.Footer
 import com.example.panaderia.ui.components.ImagenFondo
 import com.example.panaderia.ui.components.Titulo
 import com.example.panaderia.ui.theme.panaderia
-import com.example.panaderia.viewmodel.InicioViewModel
+import com.example.panaderia.viewmodel.PerfilViewModel
 
 
 @Composable
-fun Perfil(viewModel: InicioViewModel = viewModel()){
+fun Perfil(viewModel: PerfilViewModel = viewModel()){
     panaderia(){
         PerfilScaffold()
     }

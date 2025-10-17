@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.entity.extraction)
+    //implementation(libs.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -67,4 +68,16 @@ dependencies {
 
     implementation(libs.room.runtime) // Room Runtime
     implementation(libs.room.ktx) // Room KTX para soporte de Kotlin y corutinas
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.gson) // Para serialización a JSON
+
+    implementation(libs.androidx.lifecycle.viewmodel.compose.v287)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.androidx.datastore.preferences.v111)
+
+    implementation(libs.androidx.animation)
+    implementation(libs.ui)
+    implementation(libs.androidx.foundation)
+
 }
