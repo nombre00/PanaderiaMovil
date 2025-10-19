@@ -54,6 +54,8 @@ import com.example.panaderia.ui.theme.Rojo1
 import com.example.panaderia.ui.theme.Verde1
 import kotlinx.coroutines.launch
 import com.example.panaderia.R
+import com.example.panaderia.model.Envio
+import com.example.panaderia.repository.guardarEnvio
 
 @Composable
 fun Inicio(viewModel: InicioViewModel = viewModel()) {
@@ -165,10 +167,19 @@ fun InicioScaffold(viewModel: InicioViewModel){
                     productos.add(Producto("t_cafe", "Torta de Café", 15000, "https://www.littlesugarsnaps.com/wp-content/uploads/2021/05/Coffee-Flavoured-Cake-Featured-Image-8692.jpg", "torta"))
                     productos.add(Producto("c_volteada", "Crema Volteada", 14000, "https://dellepiane.pe/wp-content/uploads/2023/08/crema-volteada-001.jpg", "torta"))
                     // Panes.
-                    productos.add(Producto("marraqueta", "Marraqueta", 300, "https://comerciante.lacuarta.com/wp-content/uploads/2022/05/Marraqueta-Tema-1-ok.jpg", "pan"))
-                    productos.add(Producto("panhuevo", "Pan de huevo", 300, "https://www.tipicochileno.cl/wp-content/uploads/2021/05/pan-de-huevo-1200-628.jpg", "pan"))
-                    productos.add(Producto("dobladita", "Dobladita de queso", 400, "https://tiendaelchileno.com/wp-content/uploads/2024/12/dobladita-pagina-web.jpeg", "pan"))
-                    productos.add(Producto("medialuna", "Medialuna", 600, "https://cocinerosargentinos.com/content/recipes/original/recipes.12138.jpeg", "pan"))
+                    productos.add(Producto("marraqueta", "Marraqueta", 1700, "https://comerciante.lacuarta.com/wp-content/uploads/2022/05/Marraqueta-Tema-1-ok.jpg", "pan"))
+                    productos.add(Producto("panhuevo", "Pan de huevo", 2400, "https://www.tipicochileno.cl/wp-content/uploads/2021/05/pan-de-huevo-1200-628.jpg", "pan"))
+                    productos.add(Producto("dobladita", "Dobladita de queso", 1900, "https://tiendaelchileno.com/wp-content/uploads/2024/12/dobladita-pagina-web.jpeg", "pan"))
+                    productos.add(Producto("medialuna", "Medialuna", 4600, "https://cocinerosargentinos.com/content/recipes/original/recipes.12138.jpeg", "pan"))
+                    productos.add(Producto("hallulla","Hallulla",1600,"https://tofuu.getjusto.com/orioneat-local/resized2/XSCcrg3DdfEDenF9o-2400-x.webp","pan"))
+                    productos.add(Producto("baguette","Baguette",3000,"https://www.recetasdepan.net/wp-content/uploads/2019/05/Receta-de-pan-baguette.jpg","pan"))
+                    productos.add(Producto("bocadodedama","Bocado de dama",2100,"https://masapan.cl/cdn/shop/files/Bocado_de_dama_en_temuco_11zon.webp?v=1724895309","pan"))
+                    // Galletas
+                    productos.add(Producto("corazones", "Galletas de corazon", 2000, "https://www.dagusto.com.co/wp-content/uploads/2020/11/galletas-imagen-cuerpo.jpg", "galleta"))
+                    productos.add(Producto("g_chocolate", "Galletas chocolate", 2000, "https://cdn7.kiwilimon.com/recetaimagen/31079/640x640/35433.jpg.jpg", "galleta"))
+                    productos.add(Producto("magdalenas", "Magdalenas",2000,"https://www.onceuponachef.com/images/2022/10/madeleines-760x960.jpg","galleta"))
+                    productos.add(Producto("palmeritas","Palmeritas",2000,"https://cdn0.uncomo.com/es/posts/7/0/8/como_hacer_palmeritas_39807_orig.jpg","galleta"))
+                    productos.add(Producto("choco_blanco","Galletas choco blanco",2000,"https://farm5.staticflickr.com/4736/38190985724_7cfe37a26d_b.jpg","galleta"))
                     // Cafes.
                     productos.add(Producto("late", "Café latte", 2100, "https://images.ctfassets.net/0e6jqcgsrcye/53teNK4AvvmFIkFLtEJSEx/4d3751dcad227c87b3cf6bda955b1649/Cafe_au_lait.jpg", "cafe"))
                     productos.add(Producto("americano", "Café americano", 1800, "https://excelso77.com/wp-content/uploads/2024/05/por-que-el-cafe-americano-se-llama-asi-te-lo-contamos.webp", "cafe"))
@@ -182,7 +193,10 @@ fun InicioScaffold(viewModel: InicioViewModel){
                     // Creamos una lista de carritos.
                     val carritos = mutableListOf<Carrito>()
                     // Creamos y agregamos los carritos.
-                    carritos.add(Carrito(id = "1", productos = mutableListOf()))
+                    carritos.add(Carrito(id = "1", idCliente = "1", productos = mutableListOf()))
+
+                    // Creamos una lista de envios.
+                    val envios = mutableListOf<Envio>()
 
 
                     // Variable para manejar las corrutinas, llamo las funciones suspend con esto.
@@ -194,6 +208,7 @@ fun InicioScaffold(viewModel: InicioViewModel){
                                 // Guardamos la lista en la base de datos.
                                 guardarCatalogo(contexto, productos)
                                 guardarCarrito(contexto, carritos)
+                                guardarEnvio(contexto, envios)
                                 Toast.makeText(contexto, "carritos ${carritos.size}", Toast.LENGTH_SHORT).show()
                             }
                         }) { Text("Cargar base de datos") }

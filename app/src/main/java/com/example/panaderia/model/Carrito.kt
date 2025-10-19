@@ -9,6 +9,7 @@ import androidx.room.ColumnInfo
 data class Carrito (
     @PrimaryKey
     val id: String,
+    val idCliente: String,
     var productos: MutableList<Producto>
 )
 

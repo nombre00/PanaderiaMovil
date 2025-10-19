@@ -1,5 +1,12 @@
 package com.example.panaderia.ui.screens
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -74,8 +81,20 @@ fun CatalogoScaffold(viewModel: CatalogoViewModel){
                     // Botones
                     MenuProductos(viewModel)
 
-                    // Lista. (Puede que falte algo, un cuadro transparente para separar la lista del fondo).
-                    ListaCatalogo(listaProductos, viewModel)
+                    // Lista animada.
+                    AnimatedContent(
+                        // Este es el estado que escucha, vamos a pasarle la lista de productos que muestra ListaCatalogo()
+                        // Es el contenido que va a ir cambiando y lo que va a escuchar la animacion para gatillarse
+                        targetState = listaProductos, // Es el gatillador.
+                        transitionSpec = { // Parametros de la transision cuando se recarga la lista.
+                            // Combinar entrada y salida usando togetherWith
+                            (fadeIn(animationSpec = tween(600)) + scaleIn(initialScale = 0.8f)) togetherWith
+                                    (fadeOut(animationSpec = tween(300)) + scaleOut(targetScale = 0.8f))
+                        }
+                    ) { productos -> // Cuando la lista de productos cambia, se gatilla la animacion del contenido listado abajo, en estricto rigor define que se renderiza.
+                            ListaCatalogo(productos, viewModel)
+                    }
+
                 }
             }
 

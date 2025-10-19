@@ -31,7 +31,7 @@ fun Nosotros(){
             contentScale = ContentScale.Crop  // Ajusta la imagen al contenedor.)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(
+        Text(// Podriamos animar este texto para que se agrande y achique con estilo.
             text = "Pastelería Dulce Tradición ha sido parte de la ciudad puerto desde sus mismos inicios " +
                     "cuando don Tradición fundó la pastelería desde su humilde y señorial palacio en calle Valparaíso. " +
                     "Junto a su señora, doña Tradición, empezaron un viaje de más de un siglo de sabor y dulzura para el " +

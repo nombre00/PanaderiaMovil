@@ -37,22 +37,42 @@ fun CarritoScaffold(viewModel: CarritoViewModel){
 
     // Variable para acceder al contexto
     val contexto = LocalContext.current
+    // Estados que escucha la pagina
+    val listaCarritos by viewModel.carritos.collectAsStateWithLifecycle()
+    val listaEnvios by viewModel.envio.collectAsStateWithLifecycle()
+    // Trampa
+    val refresco by viewModel.refresco.collectAsStateWithLifecycle()
 
-    // Observamos el estado del carrito desde el viewModel
-    val carrito by viewModel.carrito.collectAsStateWithLifecycle()
-    val carritoId = "1" // ID hardcodeado por ahora, luego tomamos esto del usuario ingresado en el contexto.
-
-    // Cargar el carrito al iniciar
-    LaunchedEffect(carritoId) {
-        // Revisamos que el carrito no se cargue más de una vez
-        if (viewModel.carrito.value  == null){
-            viewModel.cargarCarrito(contexto, carritoId) // LLamamos a la funcion de CarritoViewModel
-        }
+    // Corrutinas que revisa los estados
+    LaunchedEffect(Unit) {
+        viewModel.cargarCarritos(contexto)
+    }
+    LaunchedEffect(Unit) {
+        viewModel.cargarEnvios(contexto)
+    }
+    LaunchedEffect(Unit) {
+        viewModel.cargarRefresco(contexto)
     }
 
-    // Preguntar si esto va an ViewModel
+    val idCliente = "1" // ID hardcodeado por ahora, luego tomamos esto del usuario ingresado en el contexto.
+    // Filtramos el carrito reactivamente.
+    val carrito = listaCarritos.find { it.idCliente == idCliente }
+         ?: Carrito("0", "0", mutableListOf()) // ponemos esto para inicializar el valor si o si
+
+
+
+
+
     // Calcular el precio total
-    val precio = carrito?.productos?.sumOf { it.precio } ?: 0 // Funcion lambda de kotlin, si no encontramos datos retorna 0.
+    val precio = carrito.productos.sumOf { it.precio }
+
+
+
+
+
+
+
+
 
 
     Scaffold(
@@ -71,13 +91,9 @@ fun CarritoScaffold(viewModel: CarritoViewModel){
                     // contenido que va encima de la imagen.
                     Titulo(titulo = "Carrito de compra")
 
-                    // Lista de productos en el carrito.
-                    carrito?.let { // Si el carrito no está vacio va a retornar un carrito que es el iterador pasado como parametro a ListaCarrito
-                        ListaCarrito(carrito = it, viewModel = viewModel, precio = precio)
-                    } ?: run {
-                        // Mostrar un mensaje si el carrito es nulo, a mejorar
-                        Titulo(titulo = "Carrito vacío")
-                    }
+
+                    ListaCarrito(carrito = carrito, viewModel = viewModel, precio = precio)
+
                 }
             }
         }

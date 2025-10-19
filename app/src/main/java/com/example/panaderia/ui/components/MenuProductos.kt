@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.panaderia.ui.theme.Azul2
 import com.example.panaderia.ui.theme.AzulPastel
 import com.example.panaderia.viewmodel.CatalogoViewModel
@@ -21,25 +23,28 @@ fun MenuProductos(viewModel: CatalogoViewModel){
     // Botones para filtar el catalogo y quizas el carrito.
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Button(
             onClick = { viewModel.cambiarSeleccionProductos("") },
             colors = ButtonDefaults.buttonColors(containerColor = Azul2)
-        ) { Text("Todos") }
+        ) { Text("Todo", fontSize = 12.sp) }
         Button(
             onClick = { viewModel.cambiarSeleccionProductos("pan") },
             colors = ButtonDefaults.buttonColors(containerColor = Azul2)
-        ) { Text("Pan") }
+        ) { Text("Pan", fontSize = 12.sp) }
         Button(
             onClick = { viewModel.cambiarSeleccionProductos("torta") },
             colors = ButtonDefaults.buttonColors(containerColor = Azul2)
-        ) { Text("Torta") }
+        ) { Text("Torta", fontSize = 12.sp) }
         Button(
             onClick = { viewModel.cambiarSeleccionProductos("cafe") },
             colors = ButtonDefaults.buttonColors(containerColor = Azul2)
-        ) { Text("Café") }
+        ) { Text("Café", fontSize = 12.sp) }
+        Button(
+            onClick = { viewModel.cambiarSeleccionProductos("galleta") },
+            colors = ButtonDefaults.buttonColors(containerColor = Azul2)
+        ) { Text("Galleta", fontSize = 12.sp) }
     }
 }
