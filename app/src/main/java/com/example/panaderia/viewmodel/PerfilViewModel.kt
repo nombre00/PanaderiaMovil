@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.panaderia.model.Carrito
+import com.example.panaderia.model.Cliente
 import com.example.panaderia.model.Envio
 import com.example.panaderia.repository.leerCarritos
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +15,8 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import com.example.panaderia.model.Producto
+import com.example.panaderia.repository.guardarClienteIngresado
+import com.example.panaderia.repository.leerClienteIngresado
 import com.example.panaderia.repository.leerEnvios
 
 class PerfilViewModel : ViewModel() {
@@ -58,5 +61,30 @@ class PerfilViewModel : ViewModel() {
     fun filtrarEnvios(envios: List<Envio>, idCliente: String): List<Envio> {
         val envios: List<Envio> = _envios.value.filter { it.idCliente == idCliente } // ?: emptyList<Envio>()  - parece no ser necesario el lambda, lo comentamos.
         return envios
+    }
+
+
+
+    // Funcionalidad del cliente ingresado
+    // cliente ingresado
+    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente("","","","","","",emptyList()))
+    val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
+    // Carga el cliente ingresado.
+    fun cargarClienteIngresado(contexto: Context){
+        // Corrutina
+        viewModelScope.launch {
+            leerClienteIngresado(contexto).collect { cliente ->
+                _clienteIngresado.value = cliente
+            }
+        }
+    }
+    // Funcion que cierra sesion
+    fun cerrarSesion(contexto: Context){
+        val clienteLogout = Cliente("","","","","","",emptyList())
+        _clienteIngresado.value = clienteLogout
+        // Corrutina
+        viewModelScope.launch {
+            guardarClienteIngresado(contexto, clienteLogout)
+        }
     }
 }

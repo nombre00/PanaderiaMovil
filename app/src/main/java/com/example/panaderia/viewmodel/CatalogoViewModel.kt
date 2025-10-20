@@ -5,10 +5,13 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.panaderia.model.Carrito
+import com.example.panaderia.model.Cliente
 import com.example.panaderia.model.Producto
 import com.example.panaderia.repository.guardarCarrito
 import com.example.panaderia.repository.leerCarritos
 import com.example.panaderia.repository.leerCatalogoLS
+import com.example.panaderia.repository.leerClienteIngresado
+import com.example.panaderia.repository.leerClientes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,6 +35,9 @@ class CatalogoViewModel: ViewModel() {
     // Estado de los productos filtrados.
     private val _productosFiltrados = MutableStateFlow<List<Producto>>(emptyList())
     val productosFiltrados: StateFlow<List<Producto>> = _productosFiltrados.asStateFlow()
+
+    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente("","","","","","",emptyList()))
+    val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
 
 
 
@@ -59,7 +65,6 @@ class CatalogoViewModel: ViewModel() {
     fun agregarProductoAlCarrito(contexto: Context, producto: Producto, idCarrito: String){
 
         // En kotlin, igual que en java, cunado asignamos un valor de un objeto existente, no creamos una copia, creamos un puntero al objeto original, por eso podemos modificar la copia y guardar el original y se guarda el cambio.
-
         // Corrutina.
         viewModelScope.launch {
             // Buscamos los carritos del estado y los guardamos en una variable
@@ -93,6 +98,17 @@ class CatalogoViewModel: ViewModel() {
             _catalogo.value // mostramos todos cuando no se selecciona una categoria
         } else {
             _catalogo.value.filter { it.categoria == _categoriaProducto.value } // Sino filtramos por categoria.
+        }
+    }
+
+
+    // Carga el cliente ingresado.
+    fun cargarClienteIngresado(contexto: Context){
+        // Corrutina
+        viewModelScope.launch {
+            leerClienteIngresado(contexto).collect { cliente ->
+                _clienteIngresado.value = cliente
+            }
         }
     }
 }

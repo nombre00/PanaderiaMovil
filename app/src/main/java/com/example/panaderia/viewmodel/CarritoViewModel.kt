@@ -12,11 +12,13 @@ import kotlinx.coroutines.launch
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.example.panaderia.model.Cliente
 import com.example.panaderia.repository.leerCarritos
 import kotlinx.coroutines.flow.first
 import com.example.panaderia.model.Envio
 import com.example.panaderia.model.Respuesta
 import com.example.panaderia.repository.guardarEnvio
+import com.example.panaderia.repository.leerClienteIngresado
 import com.example.panaderia.repository.leerEnvios
 import com.example.panaderia.repository.leerRespuesta
 
@@ -31,6 +33,10 @@ class CarritoViewModel : ViewModel() {
     // Buscamos los carritos, estamos repitiendo lo de arriba con una lista en vez de un carrito para no desarmar otras funcionalidades.
     private val _carritos = MutableStateFlow<List<Carrito>>(emptyList())
     val carritos: StateFlow<List<Carrito>> = _carritos.asStateFlow()
+    // cliente ingresado
+    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente("","","","","","",emptyList()))
+    val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
+
     // Una trampa
     private val _refresco = MutableStateFlow<Respuesta>(Respuesta(false))
     val refresco: StateFlow<Respuesta> = _refresco
@@ -163,7 +169,15 @@ class CarritoViewModel : ViewModel() {
         }
     }
 
-
+    // Carga el cliente ingresado.
+    fun cargarClienteIngresado(contexto: Context){
+        // Corrutina
+        viewModelScope.launch {
+            leerClienteIngresado(contexto).collect { cliente ->
+                _clienteIngresado.value = cliente
+            }
+        }
+    }
 
 
 

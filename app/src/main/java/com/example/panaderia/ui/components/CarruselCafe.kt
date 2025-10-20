@@ -15,11 +15,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.panaderia.R
+import com.example.panaderia.model.Cliente
+import com.example.panaderia.viewmodel.InicioViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CarruselCafe() {
+fun CarruselCafe(viewModel: InicioViewModel, cliente: Cliente, controladorNav: NavHostController) {
     // Creamos un estado para que lo recuerde.
     val estadoCarrusel = rememberCarouselState { 4 }
 
@@ -50,6 +53,16 @@ fun CarruselCafe() {
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
+                    .clickable(enabled = true,
+                        onClick = {
+                            val bandera = viewModel.clickOfertas(cliente, contexto)
+                            if (bandera){
+                                controladorNav.navigate("Catalogo")
+                            } else {
+                                // Toast con mensaje de ingrese
+                                Toast.makeText(contexto, "Inicie sesión", Toast.LENGTH_SHORT).show()
+                            }
+                        })
             )
         }
     }

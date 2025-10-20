@@ -42,6 +42,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.panaderia.model.Carrito
+import com.example.panaderia.model.Cliente
 import com.example.panaderia.model.Producto
 import com.example.panaderia.repository.guardarCarrito
 import com.example.panaderia.repository.leerCarritos
@@ -56,13 +57,13 @@ import kotlinx.coroutines.launch
 
 @Composable
 // La función recibe de argumento la lista de productos.
-fun ListaCatalogo(productos: List<Producto>, viewModel: CatalogoViewModel = viewModel()){
+fun ListaCatalogo(productos: List<Producto>, viewModel: CatalogoViewModel = viewModel(), cliente: Cliente){
 
     // Cargamos el contexto.
     val contexto = LocalContext.current
 
     // Por ahora vamos a hardcodear el id del carrito, despues lo vamos a sacar del usuario
-    val idCarrito = "1"
+    val idCarrito = cliente.carritoId
 
 
 

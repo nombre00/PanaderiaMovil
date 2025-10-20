@@ -53,11 +53,16 @@ fun CatalogoScaffold(viewModel: CatalogoViewModel){
 
     // Creamos una lista de productos que llama los datos del local storage.
     val listaProductos by viewModel.productosFiltrados.collectAsStateWithLifecycle()
+    // Creamos una variable que recibe el cliente ingresado.
+    val clienteIngresado by viewModel.clienteIngresado.collectAsStateWithLifecycle()
+    // Escuchamos a los carritos.
+    val carritos by viewModel.carrito.collectAsStateWithLifecycle()
 
 
     LaunchedEffect(Unit) {
         viewModel.cargarCatalogo(contexto)
         viewModel.cargarCarritos(contexto)
+        viewModel.cargarClienteIngresado(contexto)
     }
 
 
@@ -92,7 +97,7 @@ fun CatalogoScaffold(viewModel: CatalogoViewModel){
                                     (fadeOut(animationSpec = tween(300)) + scaleOut(targetScale = 0.8f))
                         }
                     ) { productos -> // Cuando la lista de productos cambia, se gatilla la animacion del contenido listado abajo, en estricto rigor define que se renderiza.
-                            ListaCatalogo(productos, viewModel)
+                            ListaCatalogo(productos, viewModel, clienteIngresado)
                     }
 
                 }

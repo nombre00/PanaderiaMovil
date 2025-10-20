@@ -38,7 +38,7 @@ suspend fun guardarEnvio(contexto: Context, envios: List<Envio>){
 // Flow permite leer los datos, esto es usado en el componente.
 fun leerEnvios(contexto: Context): Flow<List<Envio>> {
     // Retorna un mapa del contexto.
-    return contexto.dataStore3.data.map { preferences ->
+    return contexto.dataStore3.data.map { preferences -> // creo que mapear es iterar
         // Creamos un json que contiene los datos de la base de datos llamada por su llave.
         val json = preferences[ENVIOS_LLAVE] ?: ""
         // Funcion lambda, si la base está vacía retornamos una lista vacía, sino retornamos el json desserializado.

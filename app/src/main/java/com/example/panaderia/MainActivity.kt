@@ -38,12 +38,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.panaderia.model.Producto
 
 import com.example.panaderia.ui.screens.GestionCarrito
 import com.example.panaderia.ui.screens.Catalogo
 import com.example.panaderia.ui.screens.Inicio
+import com.example.panaderia.ui.screens.Login
 import com.example.panaderia.ui.screens.Perfil
+import com.example.panaderia.ui.screens.Registrarse
 import com.example.panaderia.ui.theme.panaderia
 import com.example.panaderia.viewmodel.CarritoViewModel
 
@@ -103,7 +106,7 @@ class MainActivity : ComponentActivity() {
                                 // Si son iguales, se resalta visualmente.
                                 selected = currentRoute == "Inicio",
                                 // Acción que se ejecuta al hacer clic: navega a la ruta "inicio".
-                                onClick = { controladorNav.navigate("inicio") },
+                                onClick = { controladorNav.navigate("Inicio") },
                                 // Define el ícono que se muestra (un ícono de casa de Material Design).
                                 icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
                                 // Etiqueta de texto que aparece debajo del ícono.
@@ -113,7 +116,7 @@ class MainActivity : ComponentActivity() {
                             // Tercer ítem: representa la pantalla "Catálogo".
                             NavigationBarItem(
                                 selected = currentRoute == "Catalogo", // Selecciona si la ruta es "catalogo".
-                                onClick = { controladorNav.navigate("catalogo") }, // Navega a "catalogo".
+                                onClick = { controladorNav.navigate("Catalogo") }, // Navega a "catalogo".
                                 icon = { Icon(Icons.Default.ThumbUp, contentDescription = "Catálogo") }, // Ícono de tienda.
                                 label = { Text("Catálogo") } // Etiqueta "Catálogo".
                             )
@@ -121,7 +124,7 @@ class MainActivity : ComponentActivity() {
                             // Cuarto ítem: representa la pantalla "Carrito".
                             NavigationBarItem(
                                 selected = currentRoute == "Carrito", // Selecciona si la ruta es "carrito".
-                                onClick = { controladorNav.navigate("carrito") }, // Navega a "carrito".
+                                onClick = { controladorNav.navigate("Carrito") }, // Navega a "carrito".
                                 icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Carrito") }, // Ícono de carrito.
                                 label = { Text("Carrito") } // Etiqueta "Carrito".
                             )
@@ -129,7 +132,7 @@ class MainActivity : ComponentActivity() {
                             // Quinto ítem: representa la pantalla "Perfil".
                             NavigationBarItem(
                                 selected = currentRoute == "Perfil", // Selecciona si la ruta es "perfil".
-                                onClick = { controladorNav.navigate("perfil") }, // Navega a "perfil".
+                                onClick = { controladorNav.navigate("Perfil") }, // Navega a "perfil".
                                 icon = { Icon(Icons.Default.Person, contentDescription = "Perfil") }, // Ícono de persona.
                                 label = { Text("Perfil") } // Etiqueta "Perfil".
                             )
@@ -141,13 +144,16 @@ class MainActivity : ComponentActivity() {
                             startDestination = "Inicio",
                             modifier = Modifier.padding(padding)
                         ){
-                            composable("Inicio") { Inicio() }
+                            composable("Inicio") { Inicio( controladorNav = controladorNav) }
                             composable("Catalogo") { Catalogo() }
                             composable( "Carrito") { backStackEntry ->
                                 val viewModel: CarritoViewModel = viewModel(backStackEntry)
                                 GestionCarrito(viewModel = viewModel, idCarrito = "1")
                             }
-                            composable("Perfil") { Perfil() }
+                            composable("Perfil") { Perfil(controladorNav = controladorNav) }
+                            // Rutas que no estan en el navbar, botones enrutan esto.
+                            composable("Login") { Login(controladorNav = controladorNav) }
+                            composable("Registrarse") {Registrarse(controladorNav = controladorNav)}
                         }
                     }
                 )

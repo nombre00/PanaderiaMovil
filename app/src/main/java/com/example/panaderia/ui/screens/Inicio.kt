@@ -1,5 +1,6 @@
 package com.example.panaderia.ui.screens
 
+import android.widget.Button
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,6 +25,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,7 +39,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.Producto
@@ -54,21 +60,36 @@ import com.example.panaderia.ui.theme.Rojo1
 import com.example.panaderia.ui.theme.Verde1
 import kotlinx.coroutines.launch
 import com.example.panaderia.R
+import com.example.panaderia.model.Cliente
 import com.example.panaderia.model.Envio
+import com.example.panaderia.repository.guardarClientes
 import com.example.panaderia.repository.guardarEnvio
 
 @Composable
-fun Inicio(viewModel: InicioViewModel = viewModel()) {
+fun Inicio(viewModel: InicioViewModel = viewModel(), controladorNav: NavHostController) {
 
 
     panaderia {
-       InicioScaffold(viewModel)
+       InicioScaffold(viewModel, controladorNav)
     }
 }
 
 // Funcion que crea el scaffold.
 @Composable
-fun InicioScaffold(viewModel: InicioViewModel){
+fun InicioScaffold(viewModel: InicioViewModel, controladorNav: NavHostController){
+
+    // Vamos a escuchar si el cliente está ingresado para las reacciones de unos componentes.
+    // Cargamos el cliente ingresado
+    val clienteIngresado by viewModel.clienteIngresado.collectAsStateWithLifecycle()
+
+    // Tomamos el contexto local
+    val contexto = LocalContext.current
+
+    // Revisamos el estado del cliente ingresado
+    LaunchedEffect(Unit) {
+        viewModel.cargarClienteIngresado(contexto)
+    }
+
     Scaffold(
         // Caja que contiene la imagen de fondo.
         content = { paddingValues ->
@@ -108,11 +129,15 @@ fun InicioScaffold(viewModel: InicioViewModel){
                         color = Verde1
                     )
                     Spacer(modifier = Modifier.height(12.dp))
-                    Carrusel()
+                    Carrusel(viewModel, clienteIngresado, controladorNav)
 
                     Spacer(modifier = Modifier.height(40.dp))
 
-                    PromocionDia()
+                    Button(onClick = { controladorNav.navigate("Login") }){ Text( text = "Login" ) }
+
+                    Spacer(modifier = Modifier.height(40.dp))
+
+                    PromocionDia(viewModel, clienteIngresado, controladorNav)
 
                     Spacer(modifier = Modifier.height(40.dp))
 
@@ -127,7 +152,7 @@ fun InicioScaffold(viewModel: InicioViewModel){
                         color = Verde1
                     )
                     Spacer(modifier = Modifier.height(12.dp))
-                    CarruselCafe()
+                    CarruselCafe(viewModel, clienteIngresado, controladorNav)
 
                     Spacer(modifier = Modifier.height(40.dp))
 
@@ -193,10 +218,13 @@ fun InicioScaffold(viewModel: InicioViewModel){
                     // Creamos una lista de carritos.
                     val carritos = mutableListOf<Carrito>()
                     // Creamos y agregamos los carritos.
-                    carritos.add(Carrito(id = "1", idCliente = "1", productos = mutableListOf()))
+                    //carritos.add(Carrito(id = "1", idCliente = "1", productos = mutableListOf()))
 
                     // Creamos una lista de envios.
                     val envios = mutableListOf<Envio>()
+
+                    // Creamos una lista de clientes.
+                    val clientes = mutableListOf<Cliente>()
 
 
                     // Variable para manejar las corrutinas, llamo las funciones suspend con esto.
@@ -209,6 +237,7 @@ fun InicioScaffold(viewModel: InicioViewModel){
                                 guardarCatalogo(contexto, productos)
                                 guardarCarrito(contexto, carritos)
                                 guardarEnvio(contexto, envios)
+                                guardarClientes(contexto, clientes)
                                 Toast.makeText(contexto, "carritos ${carritos.size}", Toast.LENGTH_SHORT).show()
                             }
                         }) { Text("Cargar base de datos") }
@@ -219,3 +248,5 @@ fun InicioScaffold(viewModel: InicioViewModel){
         }
     )
 }
+
+
