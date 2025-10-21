@@ -70,8 +70,7 @@ fun DetalleProducto(viewModel: DetalleProductoViewModel = DetalleProductoViewMod
                     Column(
                         modifier = Modifier
                             .height( 320.dp)
-                            .fillMaxWidth()
-                            .background(color = Gris3)) {
+                            .fillMaxWidth().clip(RoundedCornerShape(topStart = 30.dp,topEnd = 30.dp)).background(color = Gris3)) {
                         Column(modifier = Modifier.fillMaxWidth().padding(top = 12.dp) , horizontalAlignment = Alignment.CenterHorizontally){
                             // Nombre
                             Text(text = productoDetalle.nombre, fontSize = 30.sp, fontWeight = FontWeight.Bold)
