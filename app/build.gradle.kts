@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
 }
 
 android {
@@ -71,6 +72,17 @@ dependencies {
     implementation(libs.room.ktx) // Room KTX para soporte de Kotlin y corutinas
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.gson) // Para serialización a JSON
+
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+
+// Para mapas en Compose y ubicación
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation("com.google.maps.android:maps-compose:4.3.3")
+
+// Para solicitar permisos de notificación
+    implementation("androidx.core:core-ktx:1.13.1")
+
 
     implementation(libs.androidx.lifecycle.viewmodel.compose.v287)
     implementation(libs.androidx.lifecycle.runtime.compose)
