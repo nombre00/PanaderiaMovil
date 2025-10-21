@@ -1,5 +1,6 @@
 package com.example.panaderia.viewmodel
 
+
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
@@ -8,10 +9,12 @@ import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.Cliente
 import com.example.panaderia.model.Producto
 import com.example.panaderia.repository.guardarCarrito
+import com.example.panaderia.repository.guardarDetalleProducto
 import com.example.panaderia.repository.leerCarritos
 import com.example.panaderia.repository.leerCatalogoLS
 import com.example.panaderia.repository.leerClienteIngresado
 import com.example.panaderia.repository.leerClientes
+import com.example.panaderia.repository.leerDetalleProducto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,10 +39,9 @@ class CatalogoViewModel: ViewModel() {
     private val _productosFiltrados = MutableStateFlow<List<Producto>>(emptyList())
     val productosFiltrados: StateFlow<List<Producto>> = _productosFiltrados.asStateFlow()
 
-    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente("","","","","","",emptyList()))
+    private val _clienteIngresado =
+        MutableStateFlow<Cliente>(Cliente("", "", "", "", "", "", emptyList()))
     val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
-
-
 
 
     // Funcion que carga el catalogo del local storage y lo retorna (se lo pasamos al componente listaCatalogo)
@@ -51,8 +53,9 @@ class CatalogoViewModel: ViewModel() {
             }
         }
     }
+
     // Funcion que carga todos los carritos del local storage
-    fun cargarCarritos(contexto: Context){
+    fun cargarCarritos(contexto: Context) {
         // Corrutina
         viewModelScope.launch {
             leerCarritos(contexto).collect { carritos ->
@@ -62,7 +65,7 @@ class CatalogoViewModel: ViewModel() {
     }
 
     // Funcion que agrega un producto al carrito.
-    fun agregarProductoAlCarrito(contexto: Context, producto: Producto, idCarrito: String){
+    fun agregarProductoAlCarrito(contexto: Context, producto: Producto, idCarrito: String) {
 
         // En kotlin, igual que en java, cunado asignamos un valor de un objeto existente, no creamos una copia, creamos un puntero al objeto original, por eso podemos modificar la copia y guardar el original y se guarda el cambio.
         // Corrutina.
@@ -73,42 +76,70 @@ class CatalogoViewModel: ViewModel() {
             val carritoUsuario = carritosActualizados.find { it.id == idCarrito }
 
             // Si encontramos el carrito.
-            if (carritoUsuario != null){
+            if (carritoUsuario != null) {
                 // Agregamos el producto al carrito.
                 carritoUsuario.productos.add(producto) // Modificamos la copia, ambos apuntan al mismo espacio de memoria.
                 // Persistimos el cambio en local storage.
-                guardarCarrito(contexto, carritosActualizados) // Guardamos el original, ambos apuntan al mismo espacio de memoria.
+                guardarCarrito(
+                    contexto,
+                    carritosActualizados
+                ) // Guardamos el original, ambos apuntan al mismo espacio de memoria.
                 Toast.makeText(contexto, "Producto agregado al carrito.", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(contexto, "Inicie sesión para agregar un producto.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    contexto,
+                    "Inicie sesión para agregar un producto.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
 
     // Funcion que cambia el estado de la categoria seleccionada.
-    fun cambiarSeleccionProductos(categoria: String){
+    fun cambiarSeleccionProductos(categoria: String) {
         _categoriaProducto.value = categoria
         filtarProductos()
     }
 
     // Funcion que filtra los productos por categoria.
-    fun filtarProductos(){
-        _productosFiltrados.value = if (_categoriaProducto.value == "") { // Si la categoria seleccionada es nula
-            _catalogo.value // mostramos todos cuando no se selecciona una categoria
-        } else {
-            _catalogo.value.filter { it.categoria == _categoriaProducto.value } // Sino filtramos por categoria.
-        }
+    fun filtarProductos() {
+        _productosFiltrados.value =
+            if (_categoriaProducto.value == "") { // Si la categoria seleccionada es nula
+                _catalogo.value // mostramos todos cuando no se selecciona una categoria
+            } else {
+                _catalogo.value.filter { it.categoria == _categoriaProducto.value } // Sino filtramos por categoria.
+            }
     }
 
 
     // Carga el cliente ingresado.
-    fun cargarClienteIngresado(contexto: Context){
+    fun cargarClienteIngresado(contexto: Context) {
         // Corrutina
         viewModelScope.launch {
             leerClienteIngresado(contexto).collect { cliente ->
                 _clienteIngresado.value = cliente
             }
+        }
+    }
+
+
+    private val _detalleProducto = MutableStateFlow<Producto>(Producto("", "", 0, "", "", ""))
+    val detalleProducto: StateFlow<Producto> = _detalleProducto.asStateFlow()
+
+
+    fun cargarDetalleProducto(contexto: Context) {
+        // Corrutina
+        viewModelScope.launch {
+            leerDetalleProducto(contexto).collect { producto ->
+                _detalleProducto.value = producto
+            }
+        }
+    }
+
+    fun persistirDetalleProducto(contexto: Context, producto: Producto) {
+        viewModelScope.launch {
+            guardarDetalleProducto(contexto, producto)
         }
     }
 }

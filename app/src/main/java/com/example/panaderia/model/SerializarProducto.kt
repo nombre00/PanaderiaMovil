@@ -10,10 +10,19 @@ import com.google.gson.reflect.TypeToken
 fun serializarProductos(productos: List<Producto>): String{
     return Gson().toJson(productos)
 }
-
-
 // Serializar JSON a lista de productos.
 fun deserializarProductos(json: String): List<Producto> {
     val type = object : TypeToken<List<Producto>>() {}.type
+    return Gson().fromJson(json, type)
+}
+
+// Funciones que serializan el producto de detalleProducto
+// Serializar un producto a json
+fun serializarDetalleProducto(producto: Producto): String{
+    return Gson().toJson(producto)
+}
+// Deserializar JSON a un producto.
+fun deserializarDetalleProducto(json: String): Producto {
+    val type = object : TypeToken<Producto>() {}.type
     return Gson().fromJson(json, type)
 }

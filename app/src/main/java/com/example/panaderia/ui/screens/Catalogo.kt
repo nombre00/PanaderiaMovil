@@ -1,5 +1,6 @@
 package com.example.panaderia.ui.screens
 
+
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.panaderia.model.Producto
 import com.example.panaderia.repository.leerCatalogoLS
 import com.example.panaderia.ui.components.ImagenFondo
@@ -38,15 +40,15 @@ import com.example.panaderia.viewmodel.CatalogoViewModel
 
 
 @Composable
-fun Catalogo(viewModel: CatalogoViewModel = viewModel()){
+fun Catalogo(viewModel: CatalogoViewModel = viewModel(), controladorNav: NavHostController){
     panaderia(){
-        CatalogoScaffold(viewModel)
+        CatalogoScaffold(viewModel, controladorNav)
     }
 }
 
 // Funcion que crea el scaffold.
 @Composable
-fun CatalogoScaffold(viewModel: CatalogoViewModel){
+fun CatalogoScaffold(viewModel: CatalogoViewModel, controladorNav: NavHostController){
 
     // Variable para acceder al contexto
     val contexto = LocalContext.current
@@ -57,12 +59,15 @@ fun CatalogoScaffold(viewModel: CatalogoViewModel){
     val clienteIngresado by viewModel.clienteIngresado.collectAsStateWithLifecycle()
     // Escuchamos a los carritos.
     val carritos by viewModel.carrito.collectAsStateWithLifecycle()
+    // Revisamos el estado del producto
+    val productoDetalle by viewModel.detalleProducto.collectAsStateWithLifecycle()
 
 
     LaunchedEffect(Unit) {
         viewModel.cargarCatalogo(contexto)
         viewModel.cargarCarritos(contexto)
         viewModel.cargarClienteIngresado(contexto)
+        viewModel.cargarDetalleProducto(contexto)
     }
 
 
@@ -97,7 +102,7 @@ fun CatalogoScaffold(viewModel: CatalogoViewModel){
                                     (fadeOut(animationSpec = tween(300)) + scaleOut(targetScale = 0.8f))
                         }
                     ) { productos -> // Cuando la lista de productos cambia, se gatilla la animacion del contenido listado abajo, en estricto rigor define que se renderiza.
-                            ListaCatalogo(productos, viewModel, clienteIngresado)
+                        ListaCatalogo(productos, viewModel, clienteIngresado, controladorNav)
                     }
 
                 }

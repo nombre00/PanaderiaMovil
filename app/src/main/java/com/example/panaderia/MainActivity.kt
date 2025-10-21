@@ -1,5 +1,7 @@
 package com.example.panaderia
 
+
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -43,6 +45,7 @@ import com.example.panaderia.model.Producto
 
 import com.example.panaderia.ui.screens.GestionCarrito
 import com.example.panaderia.ui.screens.Catalogo
+import com.example.panaderia.ui.screens.DetalleProducto
 import com.example.panaderia.ui.screens.Inicio
 import com.example.panaderia.ui.screens.Login
 import com.example.panaderia.ui.screens.Perfil
@@ -145,7 +148,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.padding(padding)
                         ){
                             composable("Inicio") { Inicio( controladorNav = controladorNav) }
-                            composable("Catalogo") { Catalogo() }
+                            composable("Catalogo") { Catalogo(controladorNav = controladorNav) }
                             composable( "Carrito") { backStackEntry ->
                                 val viewModel: CarritoViewModel = viewModel(backStackEntry)
                                 GestionCarrito(viewModel = viewModel, idCarrito = "1")
@@ -154,6 +157,7 @@ class MainActivity : ComponentActivity() {
                             // Rutas que no estan en el navbar, botones enrutan esto.
                             composable("Login") { Login(controladorNav = controladorNav) }
                             composable("Registrarse") {Registrarse(controladorNav = controladorNav)}
+                            composable("DetalleProducto") {DetalleProducto(controladorNav = controladorNav)}
                         }
                     }
                 )

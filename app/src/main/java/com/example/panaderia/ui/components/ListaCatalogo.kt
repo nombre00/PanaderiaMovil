@@ -1,10 +1,12 @@
 package com.example.panaderia.ui.components
 
+
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.Cliente
@@ -52,18 +55,22 @@ import com.example.panaderia.ui.theme.LilaPastel
 import com.example.panaderia.ui.theme.Purple40
 import com.example.panaderia.ui.theme.RojoPastel
 import com.example.panaderia.viewmodel.CatalogoViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 @Composable
 // La función recibe de argumento la lista de productos.
-fun ListaCatalogo(productos: List<Producto>, viewModel: CatalogoViewModel = viewModel(), cliente: Cliente){
+fun ListaCatalogo(productos: List<Producto>, viewModel: CatalogoViewModel = CatalogoViewModel(), cliente: Cliente, controladorNav: NavHostController){
 
-    // Cargamos el contexto.
-    val contexto = LocalContext.current
+
 
     // Por ahora vamos a hardcodear el id del carrito, despues lo vamos a sacar del usuario
     val idCarrito = cliente.carritoId
+
+
+
 
 
 
@@ -88,7 +95,7 @@ fun ListaCatalogo(productos: List<Producto>, viewModel: CatalogoViewModel = view
                     .clip(RoundedCornerShape(24.dp)))
                 {
                     // LLamamos al formato
-                    CardProducto(p, idCarrito, viewModel)
+                    CardProducto(p, idCarrito, viewModel, controladorNav)
                     Spacer(modifier = Modifier.height(20.dp))
                 }
             }
@@ -100,7 +107,10 @@ fun ListaCatalogo(productos: List<Producto>, viewModel: CatalogoViewModel = view
 
 // Funcion que crea la Card que contiene cada producto.
 @Composable
-fun CardProducto(p: Producto, idCarrito: String, viewModel: CatalogoViewModel){
+fun CardProducto(p: Producto, idCarrito: String, viewModel: CatalogoViewModel, controladorNav: NavHostController){
+
+    val contexto = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -121,7 +131,16 @@ fun CardProducto(p: Producto, idCarrito: String, viewModel: CatalogoViewModel){
                 .size(width = 340.dp, height = 280.dp) // Seteamos el tamaño.
                 .padding(12.dp)
                 .background(color = Color.White)
-                .clip(RoundedCornerShape(24.dp)),
+                .clip(RoundedCornerShape(24.dp))
+                .clickable(enabled = true,
+                    onClick = {
+                        // Seteamos el detalleProducto a p
+                        // Necesitamos una corrutina para darle tiempo a la pagina para cargar del local storage
+                        CoroutineScope(Dispatchers.Main).launch {
+                            viewModel.persistirDetalleProducto(contexto, p)
+                            controladorNav.navigate("DetalleProducto")
+                        }
+                    }),
             contentScale = ContentScale.Crop
         )
         // Los textos van dentro de una columna para aprovechar mejor el espacio.
@@ -157,7 +176,6 @@ fun CardProducto(p: Producto, idCarrito: String, viewModel: CatalogoViewModel){
                     )
                 }
             }
-
             // Acá llamamos la funcion que crea el boton para agregar un producto al carrito
             BotonAgregarCarrito(idCarrito, p, viewModel)
         }

@@ -15,5 +15,7 @@ data class Producto(
     @ColumnInfo
     val url: String,
     @ColumnInfo
-    val categoria: String
+    val categoria: String,
+    @ColumnInfo
+    val resena: String
 )
