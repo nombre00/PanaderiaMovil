@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +34,9 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.panaderia.model.Producto
 import com.example.panaderia.ui.components.ImagenFondo
+import com.example.panaderia.ui.theme.Cafe1
 import com.example.panaderia.ui.theme.Gris2
+import com.example.panaderia.ui.theme.Gris3
 import com.example.panaderia.viewmodel.DetalleProductoViewModel
 
 
@@ -62,29 +65,34 @@ fun DetalleProducto(viewModel: DetalleProductoViewModel = DetalleProductoViewMod
                 // Imagen de fondo.
                 ImagenProducto(productoDetalle)
                 // Targeta con info
-                Column(modifier = Modifier){
+                Column(modifier = Modifier.fillMaxSize()){
                     Spacer(modifier = Modifier.weight(1f))
                     Column(
                         modifier = Modifier
-
                             .height( 320.dp)
                             .fillMaxWidth()
-                            .background(color = Color.White)) {
-
-                        Column(modifier = Modifier.fillMaxWidth().padding(6.dp), horizontalAlignment = Alignment.CenterHorizontally){
+                            .background(color = Gris3)) {
+                        Column(modifier = Modifier.fillMaxWidth().padding(top = 12.dp) , horizontalAlignment = Alignment.CenterHorizontally){
                             // Nombre
                             Text(text = productoDetalle.nombre, fontSize = 30.sp, fontWeight = FontWeight.Bold)
                             // precio.
                             Text(text = "Precio: $" + productoDetalle.precio, fontSize = 30.sp, fontWeight = FontWeight.Bold)
                         }
-                        Spacer(modifier = Modifier.height(6.dp))
+                        Spacer(modifier = Modifier.height(2.dp))
                         // Receña.
-                        Text(text = "Reseña:", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                        Text(text = productoDetalle.resena)
-                        Spacer(modifier = Modifier.weight(1f))
-                        // Boton volver.
-                        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally){
-                            Button(onClick = { controladorNav.navigate("Catalogo") }){ Text("Volver") }
+                        Column(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .height( 320.dp)
+                                .fillMaxSize()) {
+                            Text(text = "Reseña:", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                            Text(text = productoDetalle.resena)
+                            Spacer(modifier = Modifier.height(14.dp))
+                            // Boton volver.
+                            Column(modifier = Modifier.fillMaxWidth().height(100.dp), horizontalAlignment = Alignment.CenterHorizontally){
+                                Button(colors = ButtonDefaults.buttonColors( Cafe1),
+                                    onClick = { controladorNav.navigate("Catalogo") }){ Text("Volver") }
+                            }
                         }
                     }
                 }
