@@ -178,6 +178,21 @@ class CarritoViewModel : ViewModel() {
             }
         }
     }
+    // Dentro de la clase CarritoViewModel
+
+    fun cerrarSesion(contexto: Context) {
+        // Obtenemos las SharedPreferences donde guardas los datos.
+        val preferencias = contexto.getSharedPreferences("panaderia-storage", Context.MODE_PRIVATE)
+        val editor = preferencias.edit()
+
+        // Borramos la clave que guarda la información del cliente que ha iniciado sesión.
+        // Es MUY IMPORTANTE que la clave "cliente_ingresado" sea la misma que usas al guardar.
+        editor.remove("cliente_ingresado")
+        editor.apply()
+
+        // Adicionalmesdnte, reseteamos el estado en el ViewModel para que la UI reaccione al instante.
+        _clienteIngresado.value = Cliente(carritoId = "0", idEnvios = emptyList())
+    }
 
 
 

@@ -82,6 +82,9 @@ dependencies {
 
 // Para solicitar permisos de notificación
     implementation("androidx.core:core-ktx:1.13.1")
+//libreria para cargar imagenes
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
 
 
     implementation(libs.androidx.lifecycle.viewmodel.compose.v287)
