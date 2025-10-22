@@ -111,7 +111,7 @@ class MainActivity : ComponentActivity() {
                                 // Acción que se ejecuta al hacer clic: navega a la ruta "inicio".
                                 onClick = { controladorNav.navigate("Inicio") },
                                 // Define el ícono que se muestra (un ícono de casa de Material Design).
-                                icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
+                                icon = { Icon(Icons.Filled.Home, contentDescription = "Inicio") },
                                 // Etiqueta de texto que aparece debajo del ícono.
                                 label = { Text("Inicio") }
                             )
@@ -120,7 +120,7 @@ class MainActivity : ComponentActivity() {
                             NavigationBarItem(
                                 selected = currentRoute == "Catalogo", // Selecciona si la ruta es "catalogo".
                                 onClick = { controladorNav.navigate("Catalogo") }, // Navega a "catalogo".
-                                icon = { Icon(Icons.Default.ThumbUp, contentDescription = "Catálogo") }, // Ícono de tienda.
+                                icon = { Icon(Icons.Filled.ThumbUp, contentDescription = "Catálogo") }, // Ícono de tienda.
                                 label = { Text("Catálogo") } // Etiqueta "Catálogo".
                             )
 
@@ -128,7 +128,7 @@ class MainActivity : ComponentActivity() {
                             NavigationBarItem(
                                 selected = currentRoute == "Carrito", // Selecciona si la ruta es "carrito".
                                 onClick = { controladorNav.navigate("Carrito") }, // Navega a "carrito".
-                                icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Carrito") }, // Ícono de carrito.
+                                icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "Carrito") }, // Ícono de carrito.
                                 label = { Text("Carrito") } // Etiqueta "Carrito".
                             )
 
@@ -136,7 +136,7 @@ class MainActivity : ComponentActivity() {
                             NavigationBarItem(
                                 selected = currentRoute == "Perfil", // Selecciona si la ruta es "perfil".
                                 onClick = { controladorNav.navigate("Perfil") }, // Navega a "perfil".
-                                icon = { Icon(Icons.Default.Person, contentDescription = "Perfil") }, // Ícono de persona.
+                                icon = { Icon(Icons.Filled.Person, contentDescription = "Perfil") }, // Ícono de persona.
                                 label = { Text("Perfil") } // Etiqueta "Perfil".
                             )
                         }
@@ -149,9 +149,9 @@ class MainActivity : ComponentActivity() {
                         ){
                             composable("Inicio") { Inicio( controladorNav = controladorNav) }
                             composable("Catalogo") { Catalogo(controladorNav = controladorNav) }
-                            composable( "Carrito") { backStackEntry ->
-                                val viewModel: CarritoViewModel = viewModel(backStackEntry)
-                                GestionCarrito(viewModel = viewModel, idCarrito = "1")
+                            composable("Carrito") {
+                                val viewModel: CarritoViewModel = viewModel()
+                                GestionCarrito(viewModel = viewModel)
                             }
                             composable("Perfil") { Perfil(controladorNav = controladorNav) }
                             // Rutas que no estan en el navbar, botones enrutan esto.

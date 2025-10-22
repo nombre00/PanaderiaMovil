@@ -80,5 +80,4 @@ dependencies {
     implementation(libs.androidx.animation)
     implementation(libs.ui)
     implementation(libs.androidx.foundation)
-
 }

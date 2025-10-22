@@ -24,7 +24,7 @@ import com.example.panaderia.model.Producto
 
 
 @Composable
-fun GestionCarrito(viewModel: CarritoViewModel, idCarrito: String = "1"){
+fun GestionCarrito(viewModel: CarritoViewModel = CarritoViewModel()){
 
     panaderia(){
         CarritoScaffold(viewModel)
