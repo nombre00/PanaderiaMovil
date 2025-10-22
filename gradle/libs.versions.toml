@@ -28,6 +28,11 @@ androidx-datastore = "1.0.0"
 ui = "1.9.3"
 material3 = "1.4.0"
 animationCore = "1.9.3"
+#composeBom = "2024.05.00" # o 2024.09.00 si probaste que no rompe nada
+mapsCompose = "2.11.4"
+playServicesMaps = "18.2.0"
+
+
 
 [libraries]
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
