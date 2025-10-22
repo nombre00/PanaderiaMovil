@@ -214,7 +214,6 @@ fun InicioScaffold(viewModel: InicioViewModel, controladorNav: NavHostController
                     // Creamos una variable para manipular el contexto local.
                     val contexto = LocalContext.current
 
-
                     // Creamos una lista de carritos.
                     val carritos = mutableListOf<Carrito>()
                     // Creamos y agregamos los carritos.
