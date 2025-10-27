@@ -35,7 +35,7 @@ fun Carrusel(viewModel: InicioViewModel, cliente: Cliente, controladorNav: NavHo
     HorizontalMultiBrowseCarousel(
         state = estadoCarrusel,
         preferredItemWidth = 340.dp,
-        itemSpacing = 10.dp
+        itemSpacing = 16.dp
     ) { pagina ->
 
         Box(modifier = Modifier

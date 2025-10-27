@@ -22,12 +22,12 @@ import com.google.maps.android.compose.*
 @SuppressLint("MissingPermission")
 @Composable
 fun Mapa(onDismiss: () -> Unit) {
-    val context = LocalContext.current
-    var userLocation by remember { mutableStateOf<LatLng?>(null) }
+    val context = LocalContext.current  // Contexto local
+    var userLocation by remember { mutableStateOf<LatLng?>(null) }  // recuerda las coordenadas del equipo
     // Usamos 'remember' para que no se cree el cliente en cada recomposición
-    val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
+    val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }  // Esto es para no duplicar datos.
 
-    val permissionLauncher = rememberLauncherForActivityResult(
+    val permissionLauncher = rememberLauncherForActivityResult( // Pide los permisos
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = { permissions ->
             // Verificamos si alguno de los permisos de ubicación fue concedido
@@ -43,7 +43,7 @@ fun Mapa(onDismiss: () -> Unit) {
         }
     )
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(Unit) {  // Corrutina que espera los permisos.
         permissionLauncher.launch(
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
         )

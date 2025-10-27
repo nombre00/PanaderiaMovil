@@ -91,10 +91,10 @@ fun FormularioLogin(controladorNav: NavHostController, viewModel: LoginViewModel
             },
             shape = RoundedCornerShape(8.dp), // Redondeamos los bordes
             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp, horizontal = 20.dp),
-            colors = TextFieldDefaults.colors( // Seteamos los colores default
+            /** colors = TextFieldDefaults.colors( // Seteamos los colores default
                 focusedTextColor = Transparent,
                 unfocusedIndicatorColor = Transparent
-            )
+            ) */
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -122,10 +122,10 @@ fun FormularioLogin(controladorNav: NavHostController, viewModel: LoginViewModel
             },
             shape = RoundedCornerShape(8.dp), // Redondeamos los bordes
             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp, horizontal = 20.dp),
-            colors = TextFieldDefaults.colors( // Seteamos los colores default
+            /** colors = TextFieldDefaults.colors( // Seteamos los colores default
                 focusedTextColor = Transparent,
                 unfocusedIndicatorColor = Transparent
-            )
+            ) */
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -137,8 +137,7 @@ fun FormularioLogin(controladorNav: NavHostController, viewModel: LoginViewModel
                 claveError = if (clave.isBlank()) "Ingrese su clave" else ""
 
                 if (mailError.isEmpty() && claveError.isEmpty()){
-                    // Logica, falta
-
+                    // Logica
                     val bandera = viewModel.loginIngresar(contexto, mail, clave)
                     if (bandera){ // Si el ingreso es exitoso vamos a la pagina perfil
                         controladorNav.navigate("Perfil")

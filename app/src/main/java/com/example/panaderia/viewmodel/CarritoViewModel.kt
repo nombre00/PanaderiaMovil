@@ -21,6 +21,7 @@ import com.example.panaderia.repository.guardarEnvio
 import com.example.panaderia.repository.leerClienteIngresado
 import com.example.panaderia.repository.leerEnvios
 import com.example.panaderia.repository.leerRespuesta
+import com.example.panaderia.util.Notificationes
 
 
 // ViewModel maneja la logica de los estados, a eso se refieren cuando dicen que es el interlocutor entre la UI y Model.
@@ -166,6 +167,14 @@ class CarritoViewModel : ViewModel() {
             // Trampa
             // Alternar la bandera para forzar recomposición
             _refresco.value = _refresco.value.copy(valor = !_refresco.value.valor)
+
+
+            // Notificaciones.
+            val notificationes = Notificationes(contexto)
+            notificationes.mostrarNotificacion(
+                titulo = "Pedido Realizado!!",
+                contenido = "Tu compra esta siendo procesada con exito, ¡Gracias por tu compra!"
+            )
         }
     }
 
