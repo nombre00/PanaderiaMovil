@@ -123,10 +123,10 @@ fun FormularioRegistro(controladorNav: NavHostController, viewModel: Registrarse
             },
             shape = RoundedCornerShape(8.dp), // Redondeamos los bordes
             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp, horizontal = 20.dp),
-            colors = TextFieldDefaults.colors( // Seteamos los colores default
+            /** colors = TextFieldDefaults.colors( // Seteamos los colores default
                 focusedTextColor = Transparent,
                 unfocusedIndicatorColor = Transparent
-            )
+            ) */
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -144,10 +144,10 @@ fun FormularioRegistro(controladorNav: NavHostController, viewModel: Registrarse
             },
             shape = RoundedCornerShape(8.dp), // Redondeamos los bordes
             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp, horizontal = 20.dp),
-            colors = TextFieldDefaults.colors( // Seteamos los colores default
+            /** colors = TextFieldDefaults.colors( // Seteamos los colores default
                 focusedTextColor = Transparent,
                 unfocusedIndicatorColor = Transparent
-            )
+            ) */
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -165,10 +165,10 @@ fun FormularioRegistro(controladorNav: NavHostController, viewModel: Registrarse
             },
             shape = RoundedCornerShape(8.dp), // Redondeamos los bordes
             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp, horizontal = 20.dp),
-            colors = TextFieldDefaults.colors( // Seteamos los colores default
+            /** colors = TextFieldDefaults.colors( // Seteamos los colores default
                 focusedTextColor = Transparent,
                 unfocusedIndicatorColor = Transparent
-            )
+            ) */
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -196,10 +196,10 @@ fun FormularioRegistro(controladorNav: NavHostController, viewModel: Registrarse
             },
             shape = RoundedCornerShape(8.dp), // Redondeamos los bordes
             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp, horizontal = 20.dp),
-            colors = TextFieldDefaults.colors( // Seteamos los colores default
+            /** colors = TextFieldDefaults.colors( // Seteamos los colores default
                 focusedTextColor = Transparent,
                 unfocusedIndicatorColor = Transparent
-            )
+            ) */
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -227,10 +227,10 @@ fun FormularioRegistro(controladorNav: NavHostController, viewModel: Registrarse
             },
             shape = RoundedCornerShape(8.dp), // Redondeamos los bordes
             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp, horizontal = 20.dp),
-            colors = TextFieldDefaults.colors( // Seteamos los colores default
+            /** colors = TextFieldDefaults.colors( // Seteamos los colores default
                 focusedTextColor = Transparent,
                 unfocusedIndicatorColor = Transparent
-            )
+            ) */
         )
 
         Spacer(modifier = Modifier.height(8.dp))
