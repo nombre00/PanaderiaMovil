@@ -103,8 +103,7 @@ fun PerfilScaffold(viewModel: PerfilViewModel, controladorNav: NavHostController
                     // contenido que va encima de la imagen.
                     Titulo(titulo = "Perfil")
 
-
-                    SelectorFotoPerfil()
+                    SelectorFotoPerfil(viewModel, contexto)
 
                     Spacer(modifier = Modifier.height(24.dp))
 

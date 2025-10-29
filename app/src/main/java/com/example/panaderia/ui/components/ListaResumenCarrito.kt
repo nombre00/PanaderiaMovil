@@ -65,27 +65,9 @@ fun ListaResumenCarrito(carrito: Carrito, titulo: String){
                         }
                     }
                 }
-
-                // Boton comprar.
-                BotonComprar()
-
             } else {
                 Text(text = "No hay prodcutos en el carrito")
             }
         }
-    }
-}
-
-
-// Funcion del boton comprar.
-@Composable
-fun BotonComprar(){
-    // Cargamos el contexto.
-    val contexto = LocalContext.current
-
-    Button( onClick = { Toast.makeText(contexto, "funcionalidad pendiente", Toast.LENGTH_SHORT).show() },
-        shape = RoundedCornerShape(size = 6.dp)) {
-        // Texto dentro del boton.
-        Text(text = "Comprar")
     }
 }

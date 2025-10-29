@@ -29,25 +29,15 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
 import com.example.panaderia.R
+import com.example.panaderia.viewmodel.PerfilViewModel
 import kotlinx.coroutines.launch
 
-// --- Las funciones para guardar y cargar la URI se mantienen en español ---
-fun guardarUri(contexto: Context, uri: Uri) { // Funcion que guarda la imagen como string en SharedPreferences
-    val preferencias = contexto.getSharedPreferences("panaderia_prefs", Context.MODE_PRIVATE)
-    preferencias.edit().putString("uri_foto_perfil", uri.toString()).apply() // Guarda de forma asincrona rapido
-}
 
-fun cargarUri(contexto: Context): Uri? { // Carga la uri guardad
-    val preferencias = contexto.getSharedPreferences("panaderia_prefs", Context.MODE_PRIVATE)
-    val uriEnString = preferencias.getString("uri_foto_perfil", null)
-    return uriEnString?.let { Uri.parse(it) } // Si no la encuentra da un valor nulo
-}
 
 
 @Composable
-fun SelectorFotoPerfil() {
-    val contexto = LocalContext.current // Contexto local
-    var uriDeLaImagen by remember { mutableStateOf(cargarUri(contexto)) } // Escuchador de la imagen como flujo de estado
+fun SelectorFotoPerfil(viewModel: PerfilViewModel, contexto: Context) {
+    var uriDeLaImagen by remember { mutableStateOf(viewModel.cargarUri(contexto)) } // Escuchador de la imagen como flujo de estado
 
     val scope = rememberCoroutineScope() // Para lanzar corrutinas.
     val snackbarHostState = remember { SnackbarHostState() } // Controla el snackbar, mensajes flotantes, seran popups
@@ -59,7 +49,7 @@ fun SelectorFotoPerfil() {
     ) { uri: Uri? ->
         if (uri != null) { // si se selecciona una imagen
             uriDeLaImagen = uri
-            guardarUri(contexto, uri)
+            viewModel.guardarUri(contexto, uri)
         } else { // Si no se selecciona una imagen
             // Salir de la actividad si no se seleccionó imagen
             (contexto as? Activity)?.finish()

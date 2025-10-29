@@ -1,6 +1,7 @@
 package com.example.panaderia.viewmodel
 
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.panaderia.model.Carrito
@@ -86,5 +87,18 @@ class PerfilViewModel : ViewModel() {
         viewModelScope.launch {
             guardarClienteIngresado(contexto, clienteLogout)
         }
+    }
+
+
+    // Funcionalidad para acceder al external storage
+    fun guardarUri(contexto: Context, uri: Uri) { // Funcion que guarda la imagen como string en SharedPreferences
+        val preferencias = contexto.getSharedPreferences("panaderia_prefs", Context.MODE_PRIVATE)
+        preferencias.edit().putString("uri_foto_perfil", uri.toString()).apply() // Guarda de forma asincrona rapido
+    }
+
+    fun cargarUri(contexto: Context): Uri? { // Carga la uri guardad
+        val preferencias = contexto.getSharedPreferences("panaderia_prefs", Context.MODE_PRIVATE)
+        val uriEnString = preferencias.getString("uri_foto_perfil", null)
+        return uriEnString?.let { Uri.parse(it) } // Si no la encuentra da un valor nulo
     }
 }
