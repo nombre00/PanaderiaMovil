@@ -71,7 +71,7 @@ class CarritoViewModel : ViewModel() {
 
 
     // Eliminamos un producto del carrito.
-    fun eliminarProductoCarrito(contexto: Context, productoID: String, idCarrito: String){
+    fun eliminarProductoCarrito(contexto: Context, productoID: Int, idCarrito: String){
         // Corrutina
         viewModelScope.launch {
             // No se actualiza reactivamente

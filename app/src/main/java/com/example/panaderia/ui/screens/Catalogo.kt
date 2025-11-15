@@ -1,6 +1,7 @@
 package com.example.panaderia.ui.screens
 
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -64,6 +65,7 @@ fun CatalogoScaffold(viewModel: CatalogoViewModel, controladorNav: NavHostContro
 
 
     LaunchedEffect(Unit) {
+        // Log.d("LAUNCH", "LaunchedEffect ejecutado!")
         viewModel.cargarCatalogo(contexto)
         viewModel.cargarCarritos(contexto)
         viewModel.cargarClienteIngresado(contexto)

@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class DetalleProductoViewModel : ViewModel() {
 
-    private val _detalleProducto = MutableStateFlow<Producto>(Producto("","",0,"","",""))
+    private val _detalleProducto = MutableStateFlow<Producto>(Producto(0,"",0,"","",""))
     val detalleProducto: StateFlow<Producto> = _detalleProducto.asStateFlow()
 
 

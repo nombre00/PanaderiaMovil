@@ -7,7 +7,7 @@ import androidx.room.ColumnInfo
 @Entity
 data class Producto(
     @PrimaryKey
-    val id: String,
+    val id: Int,
     @ColumnInfo
     val nombre: String,
     @ColumnInfo

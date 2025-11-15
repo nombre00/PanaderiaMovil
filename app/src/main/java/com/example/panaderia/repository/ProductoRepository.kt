@@ -70,6 +70,6 @@ suspend fun guardarDetalleProducto(contexto: Context, producto: Producto){
 fun leerDetalleProducto(contexto: Context): Flow<Producto> {
     return contexto.dataStore7.data.map { preferences ->
         val json = preferences[DETALLE_PRODUCTO_LLAVE] ?: ""
-        if (json.isEmpty()) Producto("","",0,"","","") else deserializarDetalleProducto(json)
+        if (json.isEmpty()) Producto(0,"",0,"","","") else deserializarDetalleProducto(json)
     }
 }

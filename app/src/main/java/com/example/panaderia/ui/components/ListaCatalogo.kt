@@ -64,15 +64,8 @@ import kotlinx.coroutines.launch
 // La función recibe de argumento la lista de productos.
 fun ListaCatalogo(productos: List<Producto>, viewModel: CatalogoViewModel = CatalogoViewModel(), cliente: Cliente, controladorNav: NavHostController){
 
-
-
-    // Por ahora vamos a hardcodear el id del carrito, despues lo vamos a sacar del usuario
+    // Id tomada del cliente ingresado
     val idCarrito = cliente.carritoId
-
-
-
-
-
 
     // Contenedor caja externo, para centrar.
     Box(

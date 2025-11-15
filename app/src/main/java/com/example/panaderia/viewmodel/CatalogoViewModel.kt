@@ -2,12 +2,14 @@ package com.example.panaderia.viewmodel
 
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.Cliente
 import com.example.panaderia.model.Producto
+import com.example.panaderia.remote.RetrofitInstance
 import com.example.panaderia.repository.guardarCarrito
 import com.example.panaderia.repository.guardarDetalleProducto
 import com.example.panaderia.repository.leerCarritos
@@ -21,6 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class CatalogoViewModel: ViewModel() {
+
 
     // Necesitamos manejar estados del catalogo, el carrito y el usuario, falta el usuario.
     // Estado del catalogo.
@@ -46,12 +49,37 @@ class CatalogoViewModel: ViewModel() {
 
     // Funcion que carga el catalogo del local storage y lo retorna (se lo pasamos al componente listaCatalogo)
     fun cargarCatalogo(contexto: Context) {
+        // Version local storage
+        /**
         // Corrutina.
         viewModelScope.launch {
             leerCatalogoLS(contexto).collect { productos ->
                 _catalogo.value = productos
             }
         }
+        */
+
+        // Version api rest.
+
+        viewModelScope.launch {  // corrutina
+            try {
+                val respuesta = RetrofitInstance.api.getProductos()
+                Log.d("API", "Respuesta recibida. Código: ${respuesta.code()}")
+
+                if (respuesta.isSuccessful) { // Si la respuesta es exitosa
+                    val productos = respuesta.body() ?: emptyList() // Guardamos los productos o una lista vacia en una variable
+                    Log.d("API", "Productos recibidos: ${productos.size}")
+                    _catalogo.value = productos // le pasamos los productos al estado que escuchamos.
+
+                    // Guardamos en local storage por si acaso, esto nos permite acceder a los datos sin internet
+
+                }
+            } catch(e: Exception){
+                // Si hay un error cargamos los datos locales
+                Log.e("API", "Error cargando productos", e)
+            }
+        }
+
     }
 
     // Funcion que carga todos los carritos del local storage
@@ -124,7 +152,7 @@ class CatalogoViewModel: ViewModel() {
     }
 
 
-    private val _detalleProducto = MutableStateFlow<Producto>(Producto("", "", 0, "", "", ""))
+    private val _detalleProducto = MutableStateFlow<Producto>(Producto(0, "", 0, "", "", ""))
     val detalleProducto: StateFlow<Producto> = _detalleProducto.asStateFlow()
 
 
