@@ -39,8 +39,8 @@ class PerfilViewModel : ViewModel() {
         }
     }
     // Funcion que filtra los carritos y retorna el carrito del usuario.
-    fun filtrarCarrito(carritos: List<Carrito>, idCarrito: String): Carrito {
-        val carrito: Carrito = _carritos.value.find { it.id == idCarrito } ?: Carrito("0","0" ,mutableListOf<Producto>())
+    fun filtrarCarrito(carritos: List<Carrito>, idCarrito: Int): Carrito {
+        val carrito: Carrito = _carritos.value.find { it.id == idCarrito } ?: Carrito(0,0 ,mutableListOf<Producto>())
         return carrito
     }
 
@@ -59,7 +59,7 @@ class PerfilViewModel : ViewModel() {
         }
     }
     // Funcion que filtra los envios y retorna el o los envios del usuario.
-    fun filtrarEnvios(envios: List<Envio>, idCliente: String): List<Envio> {
+    fun filtrarEnvios(envios: List<Envio>, idCliente: Int): List<Envio> {
         val envios: List<Envio> = _envios.value.filter { it.idCliente == idCliente } // ?: emptyList<Envio>()  - parece no ser necesario el lambda, lo comentamos.
         return envios
     }
@@ -68,7 +68,7 @@ class PerfilViewModel : ViewModel() {
 
     // Funcionalidad del cliente ingresado
     // cliente ingresado
-    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente("","","","","","",emptyList()))
+    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
     val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
     // Carga el cliente ingresado.
     fun cargarClienteIngresado(contexto: Context){
@@ -81,7 +81,7 @@ class PerfilViewModel : ViewModel() {
     }
     // Funcion que cierra sesion
     fun cerrarSesion(contexto: Context){
-        val clienteLogout = Cliente("","","","","","",emptyList())
+        val clienteLogout = Cliente(0,"","","","",null,emptyList())
         _clienteIngresado.value = clienteLogout
         // Corrutina
         viewModelScope.launch {

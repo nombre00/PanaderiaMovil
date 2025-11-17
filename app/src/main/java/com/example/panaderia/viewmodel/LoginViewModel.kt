@@ -1,11 +1,13 @@
 package com.example.panaderia.viewmodel
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.Cliente
+import com.example.panaderia.remote.RetrofitInstance
 import com.example.panaderia.repository.guardarClienteIngresado
 import com.example.panaderia.repository.leerClienteIngresado
 import com.example.panaderia.repository.leerClientes
@@ -20,7 +22,7 @@ class LoginViewModel: ViewModel() {
     private val _clientes = MutableStateFlow<List<Cliente>>(emptyList())
     val clientes: StateFlow<List<Cliente>> = _clientes.asStateFlow()
     // Luego necesitamos el estado que recupera el cliente ingresado.
-    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente("","","","","","",emptyList()))
+    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
     val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
 
 
@@ -32,10 +34,25 @@ class LoginViewModel: ViewModel() {
 
     // Carga los clientes.
     fun cargarClientes(contexto: Context){
+        // Version local storage
+        /**
         // Corrutina
         viewModelScope.launch {
             leerClientes(contexto).collect { clientes ->
                 _clientes.value = clientes
+            }
+        }
+        */
+        // Version api rest
+        viewModelScope.launch {
+            try{
+                val respuestaGet = RetrofitInstance.api.getClientes()
+                if (respuestaGet.isSuccessful){
+                    val clientes = respuestaGet.body() ?: emptyList()
+                    _clientes.value = clientes
+                }
+            }catch(e: Exception){
+                Log.e("API", "Error cargando clientes", e)
             }
         }
     }

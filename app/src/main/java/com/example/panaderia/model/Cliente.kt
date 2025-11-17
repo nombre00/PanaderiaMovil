@@ -2,15 +2,15 @@ package com.example.panaderia.model
 
 data class Cliente (
     // Datos personales.
-    val id: String = "",
+    val id: Int = 0,
     val nombre: String = "",
     val mail: String = "",
     val direccion: String = "",
     val clave: String = "",
 
     // Datos para el sistema.
-    val carritoId: String,
-    val idEnvios: List<String>,
+    val carrito: Carrito? = null,
+    val envios: List<Envio>,
     val errores: ClienteErrores = ClienteErrores()
 )
 

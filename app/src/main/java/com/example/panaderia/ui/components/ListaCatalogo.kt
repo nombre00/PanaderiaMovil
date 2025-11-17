@@ -65,7 +65,8 @@ import kotlinx.coroutines.launch
 fun ListaCatalogo(productos: List<Producto>, viewModel: CatalogoViewModel = CatalogoViewModel(), cliente: Cliente, controladorNav: NavHostController){
 
     // Id tomada del cliente ingresado
-    val idCarrito = cliente.carritoId
+    val carritoCliente = cliente.carrito ?: Carrito(0,0,mutableListOf())
+    val idCarrito = carritoCliente.id
 
     // Contenedor caja externo, para centrar.
     Box(
@@ -100,7 +101,7 @@ fun ListaCatalogo(productos: List<Producto>, viewModel: CatalogoViewModel = Cata
 
 // Funcion que crea la Card que contiene cada producto.
 @Composable
-fun CardProducto(p: Producto, idCarrito: String, viewModel: CatalogoViewModel, controladorNav: NavHostController){
+fun CardProducto(p: Producto, idCarrito: Int, viewModel: CatalogoViewModel, controladorNav: NavHostController){
 
     val contexto = LocalContext.current
 
@@ -178,7 +179,7 @@ fun CardProducto(p: Producto, idCarrito: String, viewModel: CatalogoViewModel, c
 
 // Funcion que crea el boton agregar al carrito
 @Composable
-fun BotonAgregarCarrito(idCarrito: String, producto: Producto, viewModel: CatalogoViewModel){
+fun BotonAgregarCarrito(idCarrito: Int, producto: Producto, viewModel: CatalogoViewModel){
     // Cargamos el contexto.
     val contexto = LocalContext.current
 

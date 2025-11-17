@@ -43,7 +43,7 @@ class CatalogoViewModel: ViewModel() {
     val productosFiltrados: StateFlow<List<Producto>> = _productosFiltrados.asStateFlow()
 
     private val _clienteIngresado =
-        MutableStateFlow<Cliente>(Cliente("", "", "", "", "", "", emptyList()))
+        MutableStateFlow<Cliente>(Cliente(0, "", "", "", "", null, emptyList()))
     val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
 
 
@@ -60,7 +60,6 @@ class CatalogoViewModel: ViewModel() {
         */
 
         // Version api rest.
-
         viewModelScope.launch {  // corrutina
             try {
                 val respuesta = RetrofitInstance.api.getProductos()
@@ -72,7 +71,7 @@ class CatalogoViewModel: ViewModel() {
                     _catalogo.value = productos // le pasamos los productos al estado que escuchamos.
 
                     // Guardamos en local storage por si acaso, esto nos permite acceder a los datos sin internet
-
+                    // Aun no hecho
                 }
             } catch(e: Exception){
                 // Si hay un error cargamos los datos locales
@@ -84,18 +83,37 @@ class CatalogoViewModel: ViewModel() {
 
     // Funcion que carga todos los carritos del local storage
     fun cargarCarritos(contexto: Context) {
+        // Version local storage.
+        /**
         // Corrutina
         viewModelScope.launch {
             leerCarritos(contexto).collect { carritos ->
                 _carritos.value = carritos
             }
         }
+        */
+
+        // Version api rest.
+        viewModelScope.launch {
+            try {
+                val respuesta = RetrofitInstance.api.getCarritos() // Buscamos los datos por rest
+                if (respuesta.isSuccessful){ // Si la respuesta es 200
+                    val carritos = respuesta.body() ?: emptyList() // Pasamos los datos a una variable
+                    _carritos.value = carritos // pasamos los datos a el estado escuchado.
+                }
+            }catch(e: Exception){
+                Log.e("API", "Error cargando carritos", e)
+            }
+        }
     }
 
     // Funcion que agrega un producto al carrito.
-    fun agregarProductoAlCarrito(contexto: Context, producto: Producto, idCarrito: String) {
+    fun agregarProductoAlCarrito(contexto: Context, producto: Producto, idCarrito: Int) {
 
         // En kotlin, igual que en java, cunado asignamos un valor de un objeto existente, no creamos una copia, creamos un puntero al objeto original, por eso podemos modificar la copia y guardar el original y se guarda el cambio.
+
+        // Version local storage.
+        /**
         // Corrutina.
         viewModelScope.launch {
             // Buscamos los carritos del estado y los guardamos en una variable
@@ -119,6 +137,37 @@ class CatalogoViewModel: ViewModel() {
                     "Inicie sesión para agregar un producto.",
                     Toast.LENGTH_SHORT
                 ).show()
+            }
+        }
+        */
+
+        // Version api rest.
+        viewModelScope.launch {
+            try{
+                // Buscamos el carrito por su id.
+                val respuestaGet = RetrofitInstance.api.getCarritoPorId(idCarrito)
+                val carritoActual = respuestaGet.body() ?: throw Exception("Carrito no encontrado (body nulo)")
+                if (respuestaGet.isSuccessful){
+                    // Creamos una copia en otro espacio de memoria y modificamos eso.
+                    val carritoModificado = carritoActual.copy()
+                    // Agregamos el producto al carrito.
+                    carritoModificado.productos.add(producto)
+                    // Enviamos al backend.
+                    val respuestaPut = RetrofitInstance.api.actualizarCarrito(idCarrito, carritoModificado)
+                    // Revisamos que el put fue exitoso.
+                    if (respuestaPut.isSuccessful){
+                        val carritoActualizado = respuestaPut.body() ?: throw Exception("Respuesta vacía tras actualizar")
+                        // Actualizamos el estado local
+                        val carritosActuales = _carritos.value.toMutableList()
+                        val indice = carritosActuales.indexOfFirst { it.id == idCarrito }
+                        if (indice != -1) {
+                            carritosActuales[indice] = carritoActualizado
+                            _carritos.value = carritosActuales
+                        }
+                    }
+                }
+            }catch(e: Exception){
+                Log.e("API", "Error agregando el producto", e)
             }
         }
     }

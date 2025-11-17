@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.panaderia.model.Carrito
 import com.example.panaderia.ui.components.Footer
 import com.example.panaderia.ui.components.ImagenFondo
 import com.example.panaderia.ui.components.ListaResumenCarrito
@@ -78,7 +79,9 @@ fun PerfilScaffold(viewModel: PerfilViewModel, controladorNav: NavHostController
     }
     // Pasamos los datos del cliente ingresado
     // Filtramos el carrito del usuario
-    val carrito = viewModel.filtrarCarrito(listaCarritos, clienteIngresado.carritoId)
+    val carritoCliente = clienteIngresado.carrito ?: Carrito(0,0,mutableListOf())
+    val idCarrito = carritoCliente.id
+    val carrito = viewModel.filtrarCarrito(listaCarritos, idCarrito)
     // Filtramos los envios del usuario.
     val envios = viewModel.filtrarEnvios(listaEnvios, clienteIngresado.id)
 
@@ -114,7 +117,7 @@ fun PerfilScaffold(viewModel: PerfilViewModel, controladorNav: NavHostController
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically)
                     {
-                        if (clienteIngresado.id.isNotBlank() && clienteIngresado.id != "0") {
+                        if ( clienteIngresado.id != 0) {
                             Text(
                                 text = clienteIngresado.nombre,
                                 style = MaterialTheme.typography.headlineSmall

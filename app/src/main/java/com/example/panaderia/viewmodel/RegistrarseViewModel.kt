@@ -1,10 +1,12 @@
 package com.example.panaderia.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.Cliente
+import com.example.panaderia.remote.RetrofitInstance
 import com.example.panaderia.repository.guardarCarrito
 import com.example.panaderia.repository.guardarClientes
 import com.example.panaderia.repository.leerCarritos
@@ -27,19 +29,51 @@ class RegistrarseViewModel : ViewModel() {
     // Funciones suspendidas que cargan, escuchan, los cambios en los estados.
     // Carga los carritos.
     fun cargarCarritos(contexto: Context){
+        // Version local storage.
+        /**
         // Corrutina
         viewModelScope.launch {
-            leerCarritos(contexto).collect { carritos ->
-                _carritos.value = carritos
+        leerCarritos(contexto).collect { carritos ->
+        _carritos.value = carritos
+        }
+        }
+         */
+        // Version api rest.
+        viewModelScope.launch {
+            try {
+                val respuesta = RetrofitInstance.api.getCarritos() // Buscamos los datos por rest
+                if (respuesta.isSuccessful){ // Si la respuesta es 200
+                    val carritos = respuesta.body() ?: emptyList() // Pasamos los datos a una variable
+                    _carritos.value = carritos // pasamos los datos a el estado escuchado.
+                }
+            }catch(e: Exception){
+                Log.e("API", "Error cargando carritos", e)
             }
         }
     }
+
+
     // Carga los usuarios.
     fun cargarClientes(contexto: Context){
+        // Version local storage
+        /**
         // Corrutina
         viewModelScope.launch {
-            leerClientes(contexto).collect { clientes ->
-                _clientes.value = clientes
+        leerClientes(contexto).collect { clientes ->
+        _clientes.value = clientes
+        }
+        }
+         */
+        // Version api rest
+        viewModelScope.launch {
+            try{
+                val respuestaGet = RetrofitInstance.api.getClientes()
+                if (respuestaGet.isSuccessful){
+                    val clientes = respuestaGet.body() ?: emptyList()
+                    _clientes.value = clientes
+                }
+            }catch(e: Exception){
+                Log.e("API", "Error cargando clientes", e)
             }
         }
     }
@@ -60,7 +94,16 @@ class RegistrarseViewModel : ViewModel() {
             val carritosActualizados = _carritos.value.toMutableList() // Creamos una lista nueva en otro espacio de memoria.
             carritosActualizados.add(carrito) // Guardamos el carrito nuevo en la base de datos.
             guardarCarrito(contexto, carritosActualizados) // persistimos los cambios
+            // Guardamos en el backend
+            val respuestaPost2 = RetrofitInstance.api.guardarCarrito(carrito.id, carrito)
+            if (!respuestaPost2.isSuccessful){
+                throw Exception("Error al crear el carrito: ${respuestaPost2.code()}")
+            }
+            // Guardamos en el backend
+            val respuestaPost = RetrofitInstance.api.guardarCliente(cliente.id, cliente)
+            if (!respuestaPost.isSuccessful){
+                throw Exception("Error al crear el cliente: ${respuestaPost.code()}")
+            }
         }
     }
-
 }

@@ -256,8 +256,8 @@ fun FormularioRegistro(controladorNav: NavHostController, viewModel: Registrarse
 
                     // Hechas todas las validaciones, creamos un nuevo cliente y lo guardamos.
                     // Tenemos que revisar el id de los clientes y de los carritos conseguir el maximo y sumarle uno.
-                    var maxIdCliente = 0 // El valor parte en 0
-                    var maxIdCarrito = 0 // El valor parte en 0
+                    var maxIdCliente: Int = 0 // El valor parte en 0
+                    var maxIdCarrito: Int = 0 // El valor parte en 0
                     if (listaClientes.isEmpty()){ // Si la lista está vacia
                         maxIdCliente = 1 // El valor es 1
                     } else {  // Si no
@@ -272,17 +272,18 @@ fun FormularioRegistro(controladorNav: NavHostController, viewModel: Registrarse
                         maxIdCarrito = 1 // El valor es 1
                     } else {  // Si no
                         for (carrito in listaCarritos){ // Por cada iteracion
-                            if (carrito.id.toInt() >= maxIdCarrito){
-                                maxIdCarrito = carrito.id.toInt() // Igualamos el valor al valor maximo encontrado
+                            if (carrito.id >= maxIdCarrito){
+                                maxIdCarrito = carrito.id // Igualamos el valor al valor maximo encontrado
                             }
                         }
                         maxIdCarrito += 1 // Obtenido el valor maximo le sumamos 1
                     }
+                    val carritoNuevo = Carrito(maxIdCarrito,maxIdCliente, mutableListOf())
 
 
                     // Asignamos los valores
-                    val cliente = Cliente(maxIdCliente.toString(), nombre, mail, direccion, clave, maxIdCarrito.toString(), emptyList() )
-                    val carrito = Carrito(maxIdCarrito.toString(),maxIdCliente.toString(),emptyList<Producto>().toMutableList())
+                    val cliente = Cliente(maxIdCliente, nombre, mail, direccion, clave, carritoNuevo, emptyList() )
+                    val carrito = Carrito(maxIdCarrito,maxIdCliente,emptyList<Producto>().toMutableList())
                     viewModel.crearCliente(contexto, cliente, carrito) // Creamos y guardamos el cliente
 
                     // Creado y guardado el cliente volvemos a login para ingresar.

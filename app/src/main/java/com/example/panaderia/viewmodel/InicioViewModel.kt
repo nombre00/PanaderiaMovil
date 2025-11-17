@@ -25,7 +25,7 @@ class InicioViewModel : ViewModel() {
 
     // Funcionalidad del cliente ingresado
     // cliente ingresado
-    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente("","","","","","",emptyList()))
+    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
     val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
     // Carga el cliente ingresado.
     fun cargarClienteIngresado(contexto: Context){
@@ -41,7 +41,7 @@ class InicioViewModel : ViewModel() {
 
     fun clickOfertas(clienteIngresado: Cliente, contexto: Context): Boolean{
         // Revisa si el usuario está ingresado y si si lo lleva a catalogo a comprar, sino gatilla un toast con un mensaje
-        if (clienteIngresado.id == ""){
+        if (clienteIngresado.id == 0){
             //Toast.makeText(contexto, "Ingrese sesion", Toast.LENGTH_SHORT).show()
             return false
         } else {

@@ -64,7 +64,7 @@ suspend fun guardarClienteIngresado(contexto: Context, cliente: Cliente){
 fun leerClienteIngresado(contexto: Context): Flow<Cliente> {
     return contexto.dataStore6.data.map { preferences ->
         val json = preferences[INGRESADO_LLAVE] ?: ""
-        if (json.isEmpty()) Cliente("0","","","","", "",emptyList()) else DesserializarClienteIngresado(json)
+        if (json.isEmpty()) Cliente(0,"","","","", null,emptyList()) else DesserializarClienteIngresado(json)
     }
 }
 

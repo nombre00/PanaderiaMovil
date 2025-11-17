@@ -46,7 +46,7 @@ fun ListaResumenCarrito(carrito: Carrito, titulo: String){
 
 
 
-            if (carrito.id != "0"){
+            if (carrito.id != 0){
                 if (carrito.productos.isEmpty()){
                     Text(text = "No hay prodcutos en el carrito")
                 } else {
