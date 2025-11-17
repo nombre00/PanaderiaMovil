@@ -84,16 +84,15 @@ class CatalogoViewModel: ViewModel() {
     // Funcion que carga todos los carritos del local storage
     fun cargarCarritos(contexto: Context) {
         // Version local storage.
-        /**
         // Corrutina
         viewModelScope.launch {
             leerCarritos(contexto).collect { carritos ->
                 _carritos.value = carritos
             }
         }
-        */
 
         // Version api rest.
+        /**
         viewModelScope.launch {
             try {
                 val respuesta = RetrofitInstance.api.getCarritos() // Buscamos los datos por rest
@@ -105,6 +104,7 @@ class CatalogoViewModel: ViewModel() {
                 Log.e("API", "Error cargando carritos", e)
             }
         }
+        */
     }
 
     // Funcion que agrega un producto al carrito.
@@ -113,7 +113,6 @@ class CatalogoViewModel: ViewModel() {
         // En kotlin, igual que en java, cunado asignamos un valor de un objeto existente, no creamos una copia, creamos un puntero al objeto original, por eso podemos modificar la copia y guardar el original y se guarda el cambio.
 
         // Version local storage.
-        /**
         // Corrutina.
         viewModelScope.launch {
             // Buscamos los carritos del estado y los guardamos en una variable
@@ -139,9 +138,9 @@ class CatalogoViewModel: ViewModel() {
                 ).show()
             }
         }
-        */
 
         // Version api rest.
+        /**
         viewModelScope.launch {
             try{
                 // Buscamos el carrito por su id.
@@ -170,6 +169,7 @@ class CatalogoViewModel: ViewModel() {
                 Log.e("API", "Error agregando el producto", e)
             }
         }
+        */
     }
 
 

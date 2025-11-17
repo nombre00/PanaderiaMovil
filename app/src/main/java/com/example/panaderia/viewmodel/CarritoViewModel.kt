@@ -59,15 +59,16 @@ class CarritoViewModel : ViewModel() {
     // Cargar todos los carritos.
     fun cargarCarritos(contexto: Context){
         // Version local storage.
-        /**
+
         // Corrutina
         viewModelScope.launch {
         leerCarritos(contexto).collect { carritos ->
-        _carritos.value = carritos
+            _carritos.value = carritos
+            }
         }
-        }
-         */
+
         // Version api rest.
+        /**
         viewModelScope.launch {
             try {
                 val respuesta = RetrofitInstance.api.getCarritos() // Buscamos los datos por rest
@@ -79,6 +80,7 @@ class CarritoViewModel : ViewModel() {
                 Log.e("API", "Error cargando carritos", e)
             }
         }
+        */
     }
 
 
@@ -86,11 +88,12 @@ class CarritoViewModel : ViewModel() {
     // Filtrar el carrito del cliente.
     fun filtrarCarritoCliente(idCliente: Int): Carrito{
         // Version local storage
-        /**
         val carritoCliente: Carrito = _carritos.value.find { it.idCliente == idCliente } ?: Carrito(0,0 ,mutableListOf<Producto>())
         return carritoCliente
-        */
+
+
         // Version api rest
+        /**
         var carrito = Carrito(0,0,mutableListOf())
         viewModelScope.launch {
             try{
@@ -112,6 +115,7 @@ class CarritoViewModel : ViewModel() {
             }
         }
         return carrito // Retornamos el carrio
+        */
     }
 
 
@@ -120,7 +124,6 @@ class CarritoViewModel : ViewModel() {
     fun eliminarProductoCarrito(contexto: Context, productoID: Int, idCarrito: Int){
 
         // Version local storage
-        /**
         // Corrutina
         viewModelScope.launch {
             // No se actualiza reactivamente
@@ -147,8 +150,9 @@ class CarritoViewModel : ViewModel() {
             // Actualizamos el estado.
             _carritos.value = carritosActualziados
         }
-        */
+
         // Version api rest
+        /**
         viewModelScope.launch {
             try{
                 // Buscamos el carrito por id.
@@ -185,6 +189,7 @@ class CarritoViewModel : ViewModel() {
                 Log.e("API", "Error borrando el producto", e)
             }
         }
+        */
     }
 
 
@@ -218,9 +223,8 @@ class CarritoViewModel : ViewModel() {
 
 
     // Funcion que crea un nuevo envio, lo agrega al estado que contiene los envios y persiste en local storage.
-    fun comprar(contexto: Context, carritoCompra: Carrito){
+    fun comprar(contexto: Context, carritoCompra: Carrito) {
         // Version local storage
-        /**
         // Acciones que tenemos que hacer.
         // Tomamos los datos del carrito: idCliente, productos
         val idCliente = carritoCompra.idCliente
@@ -248,15 +252,22 @@ class CarritoViewModel : ViewModel() {
 
             // Buscamos el estado que guarda los carritos, lo editamos y persistimos.
             // Tomamos la lista como estado y la guardamos en una variable para manipularla, recuerda que la variabl es un puntero.
-            val carritosActualizados = _carritos.value.toMutableList() // Estamos creando una lista nueva en un nuevo espacio de memoria
+            val carritosActualizados =
+                _carritos.value.toMutableList() // Estamos creando una lista nueva en un nuevo espacio de memoria
             // Buscamos el carrito editado y lo guardamos en una variable, que es un puntero.
-            val carritoEditado = carritosActualizados.find { it.id == carritoCompra.id } ?: Carrito(0,0, mutableListOf())
+            val carritoEditado = carritosActualizados.find { it.id == carritoCompra.id } ?: Carrito(
+                0,
+                0,
+                mutableListOf()
+            )
             // Editamos el puntero
             carritoEditado.productos.clear()
             // Como editamos los productos del carrito vamos a copiar eso en otro espacio de memoria
-            val productosNuevos = carritoEditado.productos.toMutableList() // Acá estariamos gatillando la recombersion de la pagina
+            val productosNuevos =
+                carritoEditado.productos.toMutableList() // Acá estariamos gatillando la recombersion de la pagina
             // Creamos un carrito nuevo en un nuevo espacio de memoria.
-            val carritoNuevo = carritoEditado.copy(productos = productosNuevos) // Acá tambien se supone que gatille
+            val carritoNuevo =
+                carritoEditado.copy(productos = productosNuevos) // Acá tambien se supone que gatille
             // Borramos y reemplazamos el carrito.
             carritosActualizados.remove(carritoEditado)
             carritosActualizados.add(carritoNuevo)
@@ -279,62 +290,71 @@ class CarritoViewModel : ViewModel() {
                 titulo = "Pedido Realizado!!",
                 contenido = "Tu compra esta siendo procesada con exito, ¡Gracias por tu compra!"
             )
-        */
-        // Version api rest
-        viewModelScope.launch {
-            try{
-                // Datos del carrito
-                val idCliente = carritoCompra.idCliente
-                val productosCompra = carritoCompra.productos.toList() // Copia segura
-                val idCarrito = carritoCompra.id
 
-                // Buscamos al cliente
-                val respuestaGetCliente = RetrofitInstance.api.getClientePorId(idCliente) // Buscamos el cliente
-                if (respuestaGetCliente.isSuccessful){
-                    val cliente = respuestaGetCliente.body() ?: throw Exception("Cliente no encontrado (body nulo)")
-                    val direccion = cliente.direccion
-                    // calculamos el id del envio
-                    val enviosActuales = RetrofitInstance.api.getEnvios() // GET /envios
-                    val nuevoIdEnvio = if (enviosActuales.isSuccessful && enviosActuales.body() != null) {
-                        (enviosActuales.body()!!.maxOfOrNull { it.id } ?: 0) + 1
-                    } else {
-                        1 // Si falla, empezamos en 1
+
+            // Version api rest
+            /**
+            viewModelScope.launch {
+                try {
+                    // Datos del carrito
+                    val idCliente = carritoCompra.idCliente
+                    val productosCompra = carritoCompra.productos.toList() // Copia segura
+                    val idCarrito = carritoCompra.id
+
+                    // Buscamos al cliente
+                    val respuestaGetCliente =
+                        RetrofitInstance.api.getClientePorId(idCliente) // Buscamos el cliente
+                    if (respuestaGetCliente.isSuccessful) {
+                        val cliente = respuestaGetCliente.body()
+                            ?: throw Exception("Cliente no encontrado (body nulo)")
+                        val direccion = cliente.direccion
+                        // calculamos el id del envio
+                        val enviosActuales = RetrofitInstance.api.getEnvios() // GET /envios
+                        val nuevoIdEnvio =
+                            if (enviosActuales.isSuccessful && enviosActuales.body() != null) {
+                                (enviosActuales.body()!!.maxOfOrNull { it.id } ?: 0) + 1
+                            } else {
+                                1 // Si falla, empezamos en 1
+                            }
+                        // Creamos el envio
+                        val envioCompra = Envio(
+                            id = nuevoIdEnvio,
+                            idCliente = idCliente,
+                            direccion = direccion,
+                            estado = "preparando",
+                            productos = productosCompra
+                        )
+                        // Guardamos el envio
+                        val respuestaEnvio =
+                            RetrofitInstance.api.guardarEnvio(nuevoIdEnvio, envioCompra)
+                        if (!respuestaEnvio.isSuccessful) {
+                            throw Exception("Error al crear envío: ${respuestaEnvio.code()}")
+                        }
+                        // Vaciamos el carrito en el backend
+                        val carritoVaciado = carritoCompra.copy(productos = mutableListOf())
+                        val respuestaCarrito =
+                            RetrofitInstance.api.actualizarCarrito(idCarrito, carritoVaciado)
+                        if (!respuestaCarrito.isSuccessful) {
+                            throw Exception("Error al vaciar carrito: ${respuestaCarrito.code()}")
+                        }
+                        // actualizamos los estados escuchados por la recomposicion
+                        _carritos.value = _carritos.value.map {
+                            if (it.id == idCarrito) carritoVaciado else it
+                        }
+                        _envios.value = _envios.value + respuestaEnvio.body()!!
                     }
-                    // Creamos el envio
-                    val envioCompra = Envio(
-                        id = nuevoIdEnvio,
-                        idCliente = idCliente,
-                        direccion = direccion,
-                        estado = "preparando",
-                        productos = productosCompra
-                    )
-                    // Guardamos el envio
-                    val respuestaEnvio = RetrofitInstance.api.guardarEnvio(nuevoIdEnvio, envioCompra)
-                    if (!respuestaEnvio.isSuccessful) {
-                        throw Exception("Error al crear envío: ${respuestaEnvio.code()}")
-                    }
-                    // Vaciamos el carrito en el backend
-                    val carritoVaciado = carritoCompra.copy(productos = mutableListOf())
-                    val respuestaCarrito = RetrofitInstance.api.actualizarCarrito(idCarrito, carritoVaciado)
-                    if (!respuestaCarrito.isSuccessful) {
-                        throw Exception("Error al vaciar carrito: ${respuestaCarrito.code()}")
-                    }
-                    // actualizamos los estados escuchados por la recomposicion
-                    _carritos.value = _carritos.value.map {
-                        if (it.id == idCarrito) carritoVaciado else it
-                    }
-                    _envios.value = _envios.value + respuestaEnvio.body()!!
+                } catch (e: Exception) {
+
                 }
-            }catch(e: Exception){
-
             }
+            */
         }
+
     }
 
 
-
     // Carga el cliente ingresado. este se queda como está
-    fun cargarClienteIngresado(contexto: Context){
+    fun cargarClienteIngresado(contexto: Context) {
         // Corrutina
         viewModelScope.launch {
             leerClienteIngresado(contexto).collect { cliente ->
@@ -342,6 +362,7 @@ class CarritoViewModel : ViewModel() {
             }
         }
     }
+
 }
 
 

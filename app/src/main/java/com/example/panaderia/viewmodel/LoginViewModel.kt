@@ -82,6 +82,7 @@ class LoginViewModel: ViewModel() {
                 // Corrutina
                 viewModelScope.launch {
                     guardarClienteIngresado(contexto, clienteIngresado)
+                    // Falta cargar los clientes actualizados.
                 }
                 return true // retornamos una bandera para luego hacer un toast
             } else {
