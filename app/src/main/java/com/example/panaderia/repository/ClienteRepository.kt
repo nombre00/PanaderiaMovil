@@ -16,6 +16,8 @@ import com.example.panaderia.remote.RetrofitInstance
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.Path
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -71,6 +73,18 @@ fun leerClienteIngresado(contexto: Context): Flow<Cliente> {
 // Funciones para api rest
 suspend fun getClientes(): Response<List<Cliente>> {
     return RetrofitInstance.api.getClientes()
+}
+suspend fun getClientePorId(id: Int): Response<Cliente> {
+    return RetrofitInstance.api.getClientePorId(id)
+}
+suspend fun guardarCliente(@Path("id") id: Int, @Body cliente: Cliente): Response<Cliente> {
+    return RetrofitInstance.api.guardarCliente(id, cliente)
+}
+suspend fun actualizarCliente(@Path("id") id: Int, @Body cliente: Cliente): Response<Cliente> {
+    return RetrofitInstance.api.actualizarCliente(id, cliente)
+}
+suspend fun borrarCliente(@Path("id") id: Int): Response<Unit> {
+    return RetrofitInstance.api.borrarCliente(id)
 }
 
 

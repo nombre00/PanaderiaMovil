@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.Cliente
 import com.example.panaderia.remote.RetrofitInstance
+import com.example.panaderia.repository.getClientes
 import com.example.panaderia.repository.guardarClienteIngresado
 import com.example.panaderia.repository.leerClienteIngresado
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,7 +43,7 @@ open class LoginViewModel: ViewModel() {
         // Version api rest
         viewModelScope.launch {
             try{
-                val respuestaGet = RetrofitInstance.api.getClientes()
+                val respuestaGet = getClientes()
                 if (respuestaGet.isSuccessful){
                     val clientes = respuestaGet.body() ?: emptyList()
                     _clientes.value = clientes
@@ -52,6 +53,7 @@ open class LoginViewModel: ViewModel() {
             }
         }
     }
+
     // Carga el cliente ingresado.
     open fun cargarClienteIngresado(contexto: Context){
         // Corrutina
@@ -61,7 +63,6 @@ open class LoginViewModel: ViewModel() {
             }
         }
     }
-
 
     // Funcion que genera el login.
     open fun loginIngresar(contexto: Context, mail: String, clave: String): Boolean{

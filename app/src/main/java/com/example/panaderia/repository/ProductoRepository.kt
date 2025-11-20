@@ -11,21 +11,22 @@ import com.example.panaderia.model.deserializarDetalleProducto
 import com.example.panaderia.model.deserializarProductos
 import com.example.panaderia.model.serializarDetalleProducto
 import com.example.panaderia.model.serializarProductos
+import com.example.panaderia.remote.RetrofitInstance
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.Path
 import kotlin.text.isEmpty
 
 
+
 // Los repositorios son los encargados de manejar el acceso a los datos.
-
-
-
 
 // Creamos DataStore, esta va a ser nuestra base de datos que va a contener el catalogo en formato JSON.
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "Base de datos catalogo")
 // Clave para almacenar y reconocer la lista.
 val CATALOGO_PRODUCTOS_LLAVE = stringPreferencesKey("Base de datos catalogo")
-
 // Creamos un dataStore para guardar el producto de detalleProducto
 val Context.dataStore7: DataStore<Preferences> by preferencesDataStore(name = "Base de datos detalleProducto")
 // Clave para almacenar y reconocer la lista.
@@ -33,7 +34,7 @@ val DETALLE_PRODUCTO_LLAVE = stringPreferencesKey("Base de datos detalleProducto
 
 
 
-
+// Funciones para local storage
 // Funcion (con corrutinas) para almacenar la lista en local storage.
 suspend fun guardarCatalogo(context: Context, productos: List<Producto>){
 
@@ -58,8 +59,6 @@ fun leerCatalogoLS(context: Context): Flow<List<Producto>> {
         if (json.isEmpty()) emptyList() else deserializarProductos(json)
     }
 }
-
-
 // Funciones para leer y guardar el detalleProducto
 suspend fun guardarDetalleProducto(contexto: Context, producto: Producto){
     val json = serializarDetalleProducto(producto)
@@ -73,3 +72,29 @@ fun leerDetalleProducto(contexto: Context): Flow<Producto> {
         if (json.isEmpty()) Producto(0,"",0,"","","") else deserializarDetalleProducto(json)
     }
 }
+
+
+
+// Funciones para api rest
+suspend fun getProductos(): Response<List<Producto>> {
+    return RetrofitInstance.api.getProductos()
+}
+suspend fun getProductoPorId(id: Int): Response<Producto> {
+    return RetrofitInstance.api.getProductoPorId(id)
+}
+suspend fun guardarProducto(@Path("id") id: Int, @Body producto: Producto): Response<Producto> {
+    return RetrofitInstance.api.guardarProducto(id, producto)
+}
+suspend fun actualizarProducto(@Path("id") id: Int, @Body producto: Producto): Response<Producto> {
+    return RetrofitInstance.api.actualizarProducto(id, producto)
+}
+suspend fun borrarProducto(@Path("id") id: Int): Response<Unit> {
+    return RetrofitInstance.api.borrarProducto(id)
+}
+
+
+
+
+
+
+

@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.first
 import com.example.panaderia.model.Envio
 import com.example.panaderia.model.Respuesta
 import com.example.panaderia.remote.RetrofitInstance
+import com.example.panaderia.repository.getEnvios
 import com.example.panaderia.repository.guardarEnvio
 import com.example.panaderia.repository.leerClienteIngresado
 import com.example.panaderia.repository.leerEnvios
@@ -209,7 +210,7 @@ open class CarritoViewModel : ViewModel() {
         // Version api rest
         viewModelScope.launch {
             try{
-                val respuestaGet = RetrofitInstance.api.getEnvios()
+                val respuestaGet = getEnvios()
                 if (respuestaGet.isSuccessful){
                     val envios = respuestaGet.body() ?: emptyList()
                     _envios.value = envios
@@ -244,11 +245,6 @@ open class CarritoViewModel : ViewModel() {
         viewModelScope.launch {
             // Tomamos la lista como estado y la guardamos en una variable para manipularla, recuerda que la variabl es un puntero.
             val enviosActualizados = _envios.value.toMutableList()
-            // Agregamos el envio al puntero.
-            enviosActualizados.add(envioCompra)
-            // Persistimos el cambio
-            guardarEnvio(contexto, enviosActualizados)
-
 
             // Buscamos el estado que guarda los carritos, lo editamos y persistimos.
             // Tomamos la lista como estado y la guardamos en una variable para manipularla, recuerda que la variabl es un puntero.
@@ -272,24 +268,34 @@ open class CarritoViewModel : ViewModel() {
             carritosActualizados.remove(carritoEditado)
             carritosActualizados.add(carritoNuevo)
 
-            // Persistimos el cambio
-            guardarCarrito(contexto, carritosActualizados)
-            // Actualizamos el estado de los carritos.
-            _carritos.value = carritosActualizados
-            // Actualizamos el estado de envios.
-            _envios.value = enviosActualizados
 
-            // Trampa
-            // Alternar la bandera para forzar recomposición
-            _refresco.value = _refresco.value.copy(valor = !_refresco.value.valor)
+            // Persistimos los cambios.
+            // Hacemos todo dentro de una funcion suspendida para que todo termine de correr antes de continuar
+            viewModelScope.launch {
+                // Agregamos el envio al puntero.
+                enviosActualizados.add(envioCompra)
+                // Persistimos el cambio en el backend
+                guardarEnvio(contexto, enviosActualizados)
+                // Guardamos el carrito en local storage
+                guardarCarrito(contexto, carritosActualizados)
+                // Actualizamos el estado de los carritos.
+                _carritos.value = carritosActualizados
+                // Actualizamos el estado de envios.
+                _envios.value = enviosActualizados
+
+                // Trampa
+                // Alternar la bandera para forzar recomposición
+                _refresco.value = _refresco.value.copy(valor = !_refresco.value.valor)
 
 
-            // Notificaciones.
-            val notificationes = Notificationes(contexto)
-            notificationes.mostrarNotificacion(
-                titulo = "Pedido Realizado!!",
-                contenido = "Tu compra esta siendo procesada con exito, ¡Gracias por tu compra!"
-            )
+                // Notificaciones.
+                val notificationes = Notificationes(contexto)
+                notificationes.mostrarNotificacion(
+                    titulo = "Pedido Realizado!!",
+                    contenido = "Tu compra esta siendo procesada con exito, ¡Gracias por tu compra!"
+                )
+            }
+
 
 
             // Version api rest

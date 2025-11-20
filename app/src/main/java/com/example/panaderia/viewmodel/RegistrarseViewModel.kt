@@ -10,6 +10,7 @@ import com.example.panaderia.remote.ApiService
 import com.example.panaderia.remote.RetrofitInstance
 import com.example.panaderia.repository.getClientes
 import com.example.panaderia.repository.guardarCarrito
+import com.example.panaderia.repository.guardarCliente
 import com.example.panaderia.repository.guardarClientes
 import com.example.panaderia.repository.leerCarritos
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -97,12 +98,12 @@ open class RegistrarseViewModel : ViewModel() {
             carritosActualizados.add(carrito) // Guardamos el carrito nuevo en la base de datos.
             guardarCarrito(contexto, carritosActualizados) // persistimos los cambios
             // Guardamos en el backend
-            val respuestaPost2 = RetrofitInstance.api.guardarCarrito(carrito.id, carrito)
+            val respuestaPost2 = guardarCarrito(carrito.id, carrito)
             if (!respuestaPost2.isSuccessful){
                 throw Exception("Error al crear el carrito: ${respuestaPost2.code()}")
             }
             // Guardamos en el backend
-            val respuestaPost = RetrofitInstance.api.guardarCliente(cliente.id, cliente)
+            val respuestaPost = guardarCliente(cliente.id, cliente)
             if (!respuestaPost.isSuccessful){
                 throw Exception("Error al crear el cliente: ${respuestaPost.code()}")
             }

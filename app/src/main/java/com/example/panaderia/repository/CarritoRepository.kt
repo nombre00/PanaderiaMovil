@@ -9,19 +9,23 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.DesserializarCarritos
 import com.example.panaderia.model.SerializarCarrito
+import com.example.panaderia.remote.RetrofitInstance
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.Path
 
 
 // Los repositorios son los encargados de manejar el acceso a los datos.
 
 // Creamos DataStore, esta va a ser nuestra base de datos que va a contener los carritos en formato JSON.
 val Context.dataStore2: DataStore<Preferences> by preferencesDataStore(name = "base de datos carritos")
-
 // Clave para almacenar y reconocer la lista.
 val CARRITOS_LLAVE = stringPreferencesKey("base de datos carritos")
 
 
+// Funciones para local storage
 // Funcion (con corrutinas) para almacenar el carrito en el local storage.
 suspend fun guardarCarrito(context: Context, carritos: List<Carrito>){
 
@@ -35,9 +39,6 @@ suspend fun guardarCarrito(context: Context, carritos: List<Carrito>){
         preferences[CARRITOS_LLAVE] = json
     }
 }
-
-
-
 // Funcion que obtiene la lista de carritos del local storage.
 // Flow permite leer los datos, esto es usado en el componente.
 fun leerCarritos(context: Context): Flow<List<Carrito>> {
@@ -49,4 +50,25 @@ fun leerCarritos(context: Context): Flow<List<Carrito>> {
         if (json.isEmpty()) emptyList() else DesserializarCarritos(json)
     }
 }
+
+
+// Funciones para api rest
+suspend fun getCarritos(): Response<List<Carrito>> {
+    return RetrofitInstance.api.getCarritos()
+}
+suspend fun getCarritoPorId(id: Int): Response<Carrito> {
+    return RetrofitInstance.api.getCarritoPorId(id)
+}
+suspend fun guardarCarrito(@Path("id") id: Int, @Body carrito: Carrito): Response<Carrito> {
+    return RetrofitInstance.api.guardarCarrito(id, carrito)
+}
+suspend fun actualizarCarrito(@Path("id") id: Int, @Body carrito: Carrito): Response<Carrito> {
+    return RetrofitInstance.api.actualizarCarrito(id, carrito)
+}
+suspend fun borrarCarrito(@Path("id") id: Int): Response<Unit> {
+    return RetrofitInstance.api.borrarCarrito(id)
+}
+
+
+
 

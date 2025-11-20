@@ -33,6 +33,7 @@ open class PerfilViewModel : ViewModel() {
     val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
     val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
 
+
     // Funcionalidad de los carritos.
     // Funcion que carga todos los carritos del local storage
     open fun cargarCarritos(contexto: Context){
@@ -49,7 +50,6 @@ open class PerfilViewModel : ViewModel() {
         return carrito
     }
 
-
     // Funcionalidad de los envios.
     // Funcion que carga todos los envios del local storage.
     open fun cargarEnvios(contexto: Context){
@@ -60,6 +60,7 @@ open class PerfilViewModel : ViewModel() {
             }
         }
     }
+
     // Funcion que filtra los envios y retorna el o los envios del usuario.
     open fun filtrarEnvios(envios: List<Envio>, idCliente: Int): List<Envio> {
         val envios: List<Envio> = _envios.value.filter { it.idCliente == idCliente } // ?: emptyList<Envio>()  - parece no ser necesario el lambda, lo comentamos.
@@ -67,7 +68,6 @@ open class PerfilViewModel : ViewModel() {
     }
 
     // Funcionalidad del cliente ingresado
-    // cliente ingresado
     // Carga el cliente ingresado.
     open fun cargarClienteIngresado(contexto: Context){
         // Corrutina
@@ -77,6 +77,7 @@ open class PerfilViewModel : ViewModel() {
             }
         }
     }
+
     // Funcion que cierra sesion
     open fun cerrarSesion(contexto: Context){
         val clienteLogout = Cliente(0,"","","","",null,emptyList())
@@ -87,12 +88,12 @@ open class PerfilViewModel : ViewModel() {
         }
     }
 
-
     // Funcionalidad para acceder al external storage
     fun guardarUri(contexto: Context, uri: Uri) { // Funcion que guarda la imagen como string en SharedPreferences
         val preferencias = contexto.getSharedPreferences("panaderia_prefs", Context.MODE_PRIVATE)
         preferencias.edit().putString("uri_foto_perfil", uri.toString()).apply() // Guarda de forma asincrona rapido
     }
+
     fun cargarUri(contexto: Context): Uri? { // Carga la uri guardad
         val preferencias = contexto.getSharedPreferences("panaderia_prefs", Context.MODE_PRIVATE)
         val uriEnString = preferencias.getString("uri_foto_perfil", null)

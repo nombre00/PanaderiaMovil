@@ -10,6 +10,7 @@ import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.Cliente
 import com.example.panaderia.model.Producto
 import com.example.panaderia.remote.RetrofitInstance
+import com.example.panaderia.repository.getProductos
 import com.example.panaderia.repository.guardarCarrito
 import com.example.panaderia.repository.guardarDetalleProducto
 import com.example.panaderia.repository.leerCarritos
@@ -28,22 +29,19 @@ class CatalogoViewModel: ViewModel() {
     // Estado del catalogo.
     private val _catalogo = MutableStateFlow<List<Producto>>(emptyList())
     val catalogo: StateFlow<List<Producto>> = _catalogo.asStateFlow()
-
     // Estado del carrito.
     private val _carritos = MutableStateFlow<List<Carrito>>(emptyList())
     val carrito: StateFlow<List<Carrito>> = _carritos.asStateFlow()
-
     // Estado de la categoria seleccionada.
     private val _categoriaProducto = MutableStateFlow<String?>(null)
     val categoriaProducto: StateFlow<String?> = _categoriaProducto.asStateFlow()
-
     // Estado de los productos filtrados.
     private val _productosFiltrados = MutableStateFlow<List<Producto>>(emptyList())
     val productosFiltrados: StateFlow<List<Producto>> = _productosFiltrados.asStateFlow()
-
-    private val _clienteIngresado =
-        MutableStateFlow<Cliente>(Cliente(0, "", "", "", "", null, emptyList()))
+    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0, "", "", "", "", null, emptyList()))
     val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
+    private val _detalleProducto = MutableStateFlow<Producto>(Producto(0, "", 0, "", "", ""))
+    val detalleProducto: StateFlow<Producto> = _detalleProducto.asStateFlow()
 
 
     // Funcion que carga el catalogo del local storage y lo retorna (se lo pasamos al componente listaCatalogo)
@@ -61,16 +59,13 @@ class CatalogoViewModel: ViewModel() {
         // Version api rest.
         viewModelScope.launch {  // corrutina
             try {
-                val respuesta = RetrofitInstance.api.getProductos()
+                val respuesta = getProductos()
                 Log.d("API", "Respuesta recibida. Código: ${respuesta.code()}")
 
                 if (respuesta.isSuccessful) { // Si la respuesta es exitosa
                     val productos = respuesta.body() ?: emptyList() // Guardamos los productos o una lista vacia en una variable
                     Log.d("API", "Productos recibidos: ${productos.size}")
                     _catalogo.value = productos // le pasamos los productos al estado que escuchamos.
-
-                    // Guardamos en local storage por si acaso, esto nos permite acceder a los datos sin internet
-                    // Aun no hecho
                 }
             } catch(e: Exception){
                 // Si hay un error cargamos los datos locales
@@ -108,7 +103,6 @@ class CatalogoViewModel: ViewModel() {
 
     // Funcion que agrega un producto al carrito.
     fun agregarProductoAlCarrito(contexto: Context, producto: Producto, idCarrito: Int) {
-
         // En kotlin, igual que en java, cunado asignamos un valor de un objeto existente, no creamos una copia, creamos un puntero al objeto original, por eso podemos modificar la copia y guardar el original y se guarda el cambio.
 
         // Version local storage.
@@ -171,7 +165,6 @@ class CatalogoViewModel: ViewModel() {
         */
     }
 
-
     // Funcion que cambia el estado de la categoria seleccionada.
     fun cambiarSeleccionProductos(categoria: String) {
         _categoriaProducto.value = categoria
@@ -188,7 +181,6 @@ class CatalogoViewModel: ViewModel() {
             }
     }
 
-
     // Carga el cliente ingresado.
     fun cargarClienteIngresado(contexto: Context) {
         // Corrutina
@@ -198,11 +190,6 @@ class CatalogoViewModel: ViewModel() {
             }
         }
     }
-
-
-    private val _detalleProducto = MutableStateFlow<Producto>(Producto(0, "", 0, "", "", ""))
-    val detalleProducto: StateFlow<Producto> = _detalleProducto.asStateFlow()
-
 
     fun cargarDetalleProducto(contexto: Context) {
         // Corrutina

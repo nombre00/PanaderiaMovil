@@ -27,6 +27,8 @@ open class InicioViewModel : ViewModel() {
     // cliente ingresado
      val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
     val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
+
+
     // Carga el cliente ingresado.
     open fun cargarClienteIngresado(contexto: Context){
         // Corrutina
@@ -36,8 +38,6 @@ open class InicioViewModel : ViewModel() {
             }
         }
     }
-
-
 
     fun clickOfertas(clienteIngresado: Cliente, contexto: Context): Boolean{
         // Revisa si el usuario está ingresado y si si lo lleva a catalogo a comprar, sino gatilla un toast con un mensaje

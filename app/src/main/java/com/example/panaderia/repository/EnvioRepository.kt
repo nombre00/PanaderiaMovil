@@ -9,19 +9,23 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.panaderia.model.DesserializarEnvios
 import com.example.panaderia.model.Envio
 import com.example.panaderia.model.SerializarEnvio
+import com.example.panaderia.remote.RetrofitInstance
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.Path
 
 
 // Los repositorios son los encargados de manejar el acceso a los datos.
 
 // Creamos DataStore, esta va a ser nuestra base de datos que va a contener los carritos en formato JSON.
 val Context.dataStore3: DataStore<Preferences> by preferencesDataStore(name = "base de datos envios")
-
 // LLave para almacenar y reconocer la lista.
 val ENVIOS_LLAVE = stringPreferencesKey("base de datos envios")
 
 
+// Funciones para local storage
 // Funcion con corrutinas para almacenar los envios.
 suspend fun guardarEnvio(contexto: Context, envios: List<Envio>){
     // Creamos un json que guarda los carritos.
@@ -32,8 +36,6 @@ suspend fun guardarEnvio(contexto: Context, envios: List<Envio>){
         preferences[ENVIOS_LLAVE] = json
     }
 }
-
-
 // Funcion que obtiene la lista de envios del local storage.
 // Flow permite leer los datos, esto es usado en el componente.
 fun leerEnvios(contexto: Context): Flow<List<Envio>> {
@@ -45,3 +47,27 @@ fun leerEnvios(contexto: Context): Flow<List<Envio>> {
         if (json.isEmpty()) emptyList() else DesserializarEnvios(json)
     }
 }
+
+
+// Funciones para api rest
+suspend fun getEnvios(): Response<List<Envio>> {
+    return RetrofitInstance.api.getEnvios()
+}
+suspend fun getEnvioPorId(id: Int): Response<Envio> {
+    return RetrofitInstance.api.getEnvioPorId(id)
+}
+suspend fun guardarEnvio(@Path("id") id: Int, @Body envio: Envio): Response<Envio> {
+    return RetrofitInstance.api.guardarEnvio(id, envio)
+}
+suspend fun actualizarEnvio(@Path("id") id: Int, @Body envio: Envio): Response<Envio> {
+    return RetrofitInstance.api.actualizarEnvio(id, envio)
+}
+suspend fun borrarEnvio(@Path("id") id: Int): Response<Unit> {
+    return RetrofitInstance.api.borrarEnvio(id)
+}
+
+
+
+
+
+
