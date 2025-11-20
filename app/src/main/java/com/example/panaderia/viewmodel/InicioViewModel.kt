@@ -21,14 +21,14 @@ import kotlinx.coroutines.launch
 // Ser independiente de la Vista: Esto significa que la UI (en Inicio.kt) solo se preocupa por mostrar
 // lo que el ViewModel le proporciona, y el ViewModel no sabe cómo se ve la UI.
 
-class InicioViewModel : ViewModel() {
+open class InicioViewModel : ViewModel() {
 
     // Funcionalidad del cliente ingresado
     // cliente ingresado
-    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
+     val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
     val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
     // Carga el cliente ingresado.
-    fun cargarClienteIngresado(contexto: Context){
+    open fun cargarClienteIngresado(contexto: Context){
         // Corrutina
         viewModelScope.launch {
             leerClienteIngresado(contexto).collect { cliente ->

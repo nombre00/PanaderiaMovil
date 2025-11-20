@@ -15,24 +15,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel: ViewModel() {
+open class LoginViewModel: ViewModel() {
 
     // Primero necesitamos el estado que recupera los clientes
-    private val _clientes = MutableStateFlow<List<Cliente>>(emptyList())
+    val _clientes = MutableStateFlow<List<Cliente>>(emptyList())
     val clientes: StateFlow<List<Cliente>> = _clientes.asStateFlow()
     // Luego necesitamos el estado que recupera el cliente ingresado.
-    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
+    val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
     val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
-
-
-
     // Como cada cliente tiene un carrito tambien vamos a necesitar los carritos.
-    private val _carritos = MutableStateFlow<List<Carrito>>(emptyList())
+    val _carritos = MutableStateFlow<List<Carrito>>(emptyList())
     val carritos: StateFlow<List<Carrito>> = _carritos.asStateFlow()
 
 
     // Carga los clientes.
-    fun cargarClientes(contexto: Context){
+    open fun cargarClientes(contexto: Context){
         // Version local storage
         /**
         // Corrutina
@@ -56,7 +53,7 @@ class LoginViewModel: ViewModel() {
         }
     }
     // Carga el cliente ingresado.
-    fun cargarClienteIngresado(contexto: Context){
+    open fun cargarClienteIngresado(contexto: Context){
         // Corrutina
         viewModelScope.launch {
             leerClienteIngresado(contexto).collect { cliente ->
@@ -67,7 +64,7 @@ class LoginViewModel: ViewModel() {
 
 
     // Funcion que genera el login.
-    fun loginIngresar(contexto: Context, mail: String, clave: String): Boolean{
+    open fun loginIngresar(contexto: Context, mail: String, clave: String): Boolean{
         // Carga los clientes, compara el mail y la contraseña y si encuentra el cliente gaurda el cliente en localStorage
         // Buscamos el cliente en los clientes
         val clienteIngresado = _clientes.value.find { it.clave == clave && it.mail == mail } ?: null

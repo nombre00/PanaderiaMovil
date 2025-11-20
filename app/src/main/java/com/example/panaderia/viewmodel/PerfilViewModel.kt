@@ -20,22 +20,22 @@ import com.example.panaderia.repository.guardarClienteIngresado
 import com.example.panaderia.repository.leerClienteIngresado
 import com.example.panaderia.repository.leerEnvios
 
-class PerfilViewModel : ViewModel() {
+open class PerfilViewModel : ViewModel() {
 
     // Necesitamos manejar los estados del usuario, el carrito, los envios.
 
     // Funcionalidad del carrito.
     // Estado del carrito.
-    private val _carritos = MutableStateFlow<List<Carrito>>(emptyList())
+    val _carritos = MutableStateFlow<List<Carrito>>(emptyList())
     val carrito: StateFlow<List<Carrito>> = _carritos.asStateFlow()
-    private val _envios = MutableStateFlow<List<Envio>>(emptyList())
+    val _envios = MutableStateFlow<List<Envio>>(emptyList())
     val envio: StateFlow<List<Envio>> = _envios.asStateFlow()
-    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
+    val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
     val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
 
     // Funcionalidad de los carritos.
     // Funcion que carga todos los carritos del local storage
-    fun cargarCarritos(contexto: Context){
+    open fun cargarCarritos(contexto: Context){
         // Corrutina
         viewModelScope.launch {
             leerCarritos(contexto).collect { carritos ->
@@ -44,7 +44,7 @@ class PerfilViewModel : ViewModel() {
         }
     }
     // Funcion que filtra los carritos y retorna el carrito del usuario.
-    fun filtrarCarrito(carritos: List<Carrito>, idCarrito: Int): Carrito {
+    open fun filtrarCarrito(carritos: List<Carrito>, idCarrito: Int): Carrito {
         val carrito: Carrito = _carritos.value.find { it.id == idCarrito } ?: Carrito(0,0 ,mutableListOf<Producto>())
         return carrito
     }
@@ -52,7 +52,7 @@ class PerfilViewModel : ViewModel() {
 
     // Funcionalidad de los envios.
     // Funcion que carga todos los envios del local storage.
-    fun cargarEnvios(contexto: Context){
+    open fun cargarEnvios(contexto: Context){
         // Corrutina.
         viewModelScope.launch {
             leerEnvios(contexto).collect { envios ->
@@ -61,7 +61,7 @@ class PerfilViewModel : ViewModel() {
         }
     }
     // Funcion que filtra los envios y retorna el o los envios del usuario.
-    fun filtrarEnvios(envios: List<Envio>, idCliente: Int): List<Envio> {
+    open fun filtrarEnvios(envios: List<Envio>, idCliente: Int): List<Envio> {
         val envios: List<Envio> = _envios.value.filter { it.idCliente == idCliente } // ?: emptyList<Envio>()  - parece no ser necesario el lambda, lo comentamos.
         return envios
     }
@@ -69,7 +69,7 @@ class PerfilViewModel : ViewModel() {
     // Funcionalidad del cliente ingresado
     // cliente ingresado
     // Carga el cliente ingresado.
-    fun cargarClienteIngresado(contexto: Context){
+    open fun cargarClienteIngresado(contexto: Context){
         // Corrutina
         viewModelScope.launch {
             leerClienteIngresado(contexto).collect { cliente ->
@@ -78,7 +78,7 @@ class PerfilViewModel : ViewModel() {
         }
     }
     // Funcion que cierra sesion
-    fun cerrarSesion(contexto: Context){
+    open fun cerrarSesion(contexto: Context){
         val clienteLogout = Cliente(0,"","","","",null,emptyList())
         _clienteIngresado.value = clienteLogout
         // Corrutina
