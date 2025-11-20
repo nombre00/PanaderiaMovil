@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class DetalleProductoViewModel : ViewModel() {
+open class DetalleProductoViewModel : ViewModel() {
 
-    private val _detalleProducto = MutableStateFlow<Producto>(Producto(0,"",0,"","",""))
+    val _detalleProducto = MutableStateFlow<Producto>(Producto(0,"",0,"","",""))
     val detalleProducto: StateFlow<Producto> = _detalleProducto.asStateFlow()
 
 
-    fun cargarDetalleProducto(contexto: Context){
+    open fun cargarDetalleProducto(contexto: Context){
         // Corrutina
         viewModelScope.launch {
             leerDetalleProducto(contexto).collect { producto ->

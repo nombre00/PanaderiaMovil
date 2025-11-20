@@ -56,8 +56,10 @@ fun CarritoScaffold(viewModel: CarritoViewModel){
     // Usamos el id del cliente ingresado para buscar su carrito.
     val idCliente = clienteIngresado.id
     // Filtramos el carrito reactivamente.
-    val carrito = listaCarritos.find { it.idCliente == idCliente }
-         ?: Carrito(0, 0, mutableListOf()) // ponemos esto para inicializar el valor si o si
+
+    val carrito = viewModel.filtrarCarritoCliente(idCliente)
+    //val carrito = listaCarritos.find { it.idCliente == idCliente }
+    //     ?: Carrito(0, 0, mutableListOf()) // ponemos esto para inicializar el valor si o si
 
     // Calcular el precio total
     val precio = carrito.productos.sumOf { it.precio }

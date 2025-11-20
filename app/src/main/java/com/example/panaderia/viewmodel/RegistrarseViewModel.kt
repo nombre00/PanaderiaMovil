@@ -6,39 +6,40 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.panaderia.model.Carrito
 import com.example.panaderia.model.Cliente
+import com.example.panaderia.remote.ApiService
 import com.example.panaderia.remote.RetrofitInstance
+import com.example.panaderia.repository.getClientes
 import com.example.panaderia.repository.guardarCarrito
 import com.example.panaderia.repository.guardarClientes
 import com.example.panaderia.repository.leerCarritos
-import com.example.panaderia.repository.leerClientes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class RegistrarseViewModel : ViewModel() {
+open class RegistrarseViewModel : ViewModel() {
 
     // Primero necesitamos el estado que recupera los clientes
-    private val _clientes = MutableStateFlow<List<Cliente>>(emptyList())
+    val _clientes = MutableStateFlow<List<Cliente>>(emptyList())
     val clientes: StateFlow<List<Cliente>> = _clientes.asStateFlow()
     // Como cada cliente tiene un carrito tambien vamos a necesitar los carritos.
-    private val _carritos = MutableStateFlow<List<Carrito>>(emptyList())
+    val _carritos = MutableStateFlow<List<Carrito>>(emptyList())
     val carritos: StateFlow<List<Carrito>> = _carritos.asStateFlow()
 
 
     // Funciones suspendidas que cargan, escuchan, los cambios en los estados.
     // Carga los carritos.
-    fun cargarCarritos(contexto: Context){
+    open fun cargarCarritos(contexto: Context){
         // Version local storage.
-        /**
         // Corrutina
         viewModelScope.launch {
-        leerCarritos(contexto).collect { carritos ->
-        _carritos.value = carritos
+            leerCarritos(contexto).collect { carritos ->
+            _carritos.value = carritos
+            }
         }
-        }
-         */
+
         // Version api rest.
+        /**
         viewModelScope.launch {
             try {
                 val respuesta = RetrofitInstance.api.getCarritos() // Buscamos los datos por rest
@@ -50,11 +51,12 @@ class RegistrarseViewModel : ViewModel() {
                 Log.e("API", "Error cargando carritos", e)
             }
         }
+        */
     }
 
 
     // Carga los usuarios.
-    fun cargarClientes(contexto: Context){
+    open fun cargarClientes(contexto: Context){
         // Version local storage
         /**
         // Corrutina
@@ -67,7 +69,7 @@ class RegistrarseViewModel : ViewModel() {
         // Version api rest
         viewModelScope.launch {
             try{
-                val respuestaGet = RetrofitInstance.api.getClientes()
+                val respuestaGet = getClientes()
                 if (respuestaGet.isSuccessful){
                     val clientes = respuestaGet.body() ?: emptyList()
                     _clientes.value = clientes
@@ -81,7 +83,7 @@ class RegistrarseViewModel : ViewModel() {
 
     // Funciones CRUD.
     // Crear un nuevo cliente y guardarlo.
-    fun crearCliente(contexto: Context, cliente: Cliente, carrito: Carrito){
+    open fun crearCliente(contexto: Context, cliente: Cliente, carrito: Carrito){
         // Asumimos que los datos ya fueron validados y el cliente creado corresponde.
         // Corrutina
         viewModelScope.launch {

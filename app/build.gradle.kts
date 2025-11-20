@@ -72,6 +72,19 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.gson) // Para serialización a JSON
 
+    testImplementation(libs.kotest.runner.junit5) // Para testeos
+    testImplementation(libs.kotest.assertions.core) // Para testeos
+
+    // testImplementation(libs.junit.jupiter) // Para testeos
+    testImplementation(libs.junit.jupiter.api) // Para testeos
+    testImplementation(libs.junit.jupiter.params) // Para testeos
+
+    testImplementation(libs.mockk) // Para testeos
+    androidTestImplementation(libs.ui.test.junit4) // Para testeos
+    androidTestImplementation(libs.ui.test.manifest) // Para testeos
+    testRuntimeOnly(libs.junit.jupiter.engine) // Para testeos
+
+
     implementation(libs.androidx.lifecycle.viewmodel.compose.v287)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.kotlinx.coroutines.core)
@@ -89,3 +102,6 @@ dependencies {
     implementation(libs.retrofit) // Retrofit para REST
     implementation(libs.converter.gson) // Para convertir contenido de peticiones rest a json y viceversa
 }
+
+// Obligatorio para usar junit 5
+tasks.withType<Test>().configureEach { useJUnitPlatform() }

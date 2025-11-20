@@ -11,25 +11,27 @@ import com.example.panaderia.model.DesserializarCliente
 import com.example.panaderia.model.DesserializarClienteIngresado
 import com.example.panaderia.model.SerializarCliente
 import com.example.panaderia.model.SerializarClienteIngresado
+import com.example.panaderia.remote.ApiService
+import com.example.panaderia.remote.RetrofitInstance
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import retrofit2.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
 // Los repositorios son los encargados de manejar el acceso a los datos.
-
 // Creamos DataStore, esta va a ser nuestra base de datos que va a contener los clientes en formato JSON.
 val Context.dataStore5: DataStore<Preferences> by preferencesDataStore(name = "base de datos clientes")
-
 // Para almacenar y reconocer la lista
 val CLIENTES_LLAVE = stringPreferencesKey("base de datos clientes")
-
-
 // Creamos un dataStore para el cliente ingresado, solo va a guardar un Cliente.
 val Context.dataStore6: DataStore<Preferences> by preferencesDataStore(name = "usuario ingresado")
 // LLave
 val INGRESADO_LLAVE = stringPreferencesKey("usuario ingresado")
 
 
+// Funciones para local storage
 // Funcion con corrutinas para almacenar los clientes
 suspend fun guardarClientes(contexto: Context,clientes: List<Cliente>){
     // Creamos un jeson que vamos a guardar.
@@ -40,7 +42,6 @@ suspend fun guardarClientes(contexto: Context,clientes: List<Cliente>){
         preferences[CLIENTES_LLAVE] = json
     }
 }
-
 // Funcion que obtiene la lista de envios del local storage.
 // Flow permite leer los datos, esto es usado en el componente.
 fun leerClientes(contexto: Context): Flow<List<Cliente>> {
@@ -51,8 +52,6 @@ fun leerClientes(contexto: Context): Flow<List<Cliente>> {
         if (json.isEmpty()) emptyList() else DesserializarCliente(json)
     }
 }
-
-
 // Funcion que guarda el cliente ingresado.
 suspend fun guardarClienteIngresado(contexto: Context, cliente: Cliente){
     val json = SerializarClienteIngresado(cliente)
@@ -67,6 +66,15 @@ fun leerClienteIngresado(contexto: Context): Flow<Cliente> {
         if (json.isEmpty()) Cliente(0,"","","","", null,emptyList()) else DesserializarClienteIngresado(json)
     }
 }
+
+
+// Funciones para api rest
+suspend fun getClientes(): Response<List<Cliente>> {
+    return RetrofitInstance.api.getClientes()
+}
+
+
+
 
 
 

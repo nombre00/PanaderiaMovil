@@ -28,7 +28,12 @@ class PerfilViewModel : ViewModel() {
     // Estado del carrito.
     private val _carritos = MutableStateFlow<List<Carrito>>(emptyList())
     val carrito: StateFlow<List<Carrito>> = _carritos.asStateFlow()
+    private val _envios = MutableStateFlow<List<Envio>>(emptyList())
+    val envio: StateFlow<List<Envio>> = _envios.asStateFlow()
+    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
+    val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
 
+    // Funcionalidad de los carritos.
     // Funcion que carga todos los carritos del local storage
     fun cargarCarritos(contexto: Context){
         // Corrutina
@@ -46,9 +51,6 @@ class PerfilViewModel : ViewModel() {
 
 
     // Funcionalidad de los envios.
-    private val _envios = MutableStateFlow<List<Envio>>(emptyList())
-    val envio: StateFlow<List<Envio>> = _envios.asStateFlow()
-
     // Funcion que carga todos los envios del local storage.
     fun cargarEnvios(contexto: Context){
         // Corrutina.
@@ -64,12 +66,8 @@ class PerfilViewModel : ViewModel() {
         return envios
     }
 
-
-
     // Funcionalidad del cliente ingresado
     // cliente ingresado
-    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
-    val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
     // Carga el cliente ingresado.
     fun cargarClienteIngresado(contexto: Context){
         // Corrutina
@@ -95,7 +93,6 @@ class PerfilViewModel : ViewModel() {
         val preferencias = contexto.getSharedPreferences("panaderia_prefs", Context.MODE_PRIVATE)
         preferencias.edit().putString("uri_foto_perfil", uri.toString()).apply() // Guarda de forma asincrona rapido
     }
-
     fun cargarUri(contexto: Context): Uri? { // Carga la uri guardad
         val preferencias = contexto.getSharedPreferences("panaderia_prefs", Context.MODE_PRIVATE)
         val uriEnString = preferencias.getString("uri_foto_perfil", null)

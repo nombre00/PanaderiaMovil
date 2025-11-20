@@ -8,6 +8,10 @@ datastorePreferences = "1.0.0"
 datastorePreferencesVersion = "1.1.1"
 foundation = "1.9.3"
 gson = "2.10.1"
+junitJupiter = "5.10.3"
+junitJupiterEngine = "5.10.3"
+kotestAssertionsCore = "5.8.0"
+kotestRunnerJunit5 = "5.8.0"
 kotlin = "2.0.21"
 coreKtx = "1.17.0"
 junit = "4.13.2"
@@ -19,6 +23,7 @@ activityCompose = "1.11.0"
 composeBom = "2024.09.00"
 
 lifecycleViewmodelCompose = "2.8.7"
+mockk = "1.13.10"
 navigation = "2.7.5"
 lifecycleViewmodel = "2.9.4"
 coroutines = "1.10.2"
@@ -33,6 +38,8 @@ animationCore = "1.9.3"
 #composeBom = "2024.05.00" # o 2024.09.00 si probaste que no rompe nada
 mapsCompose = "2.11.4"
 playServicesMaps = "18.2.0"
+uiTestJunit4 = "1.6.2"
+uiTestManifest = "1.6.2"
 
 
 
@@ -64,9 +71,19 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodel" }
+
+# junit-jupiter = { module = "org.junit,jupiter:junit-jupiter", version.ref = "junitJupiter" }
+# JUnit 5 - CORRECTO Y ACTUAL (2025)
+junit-jupiter-api      = { module = "org.junit.jupiter:junit-jupiter-api",      version.ref = "junitJupiterEngine" }
+junit-jupiter-params   = { module = "org.junit.jupiter:junit-jupiter-params",   version.ref = "junitJupiterEngine" }
+
+junit-jupiter-engine   = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junitJupiterEngine" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotestAssertionsCore" }
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotestRunnerJunit5" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 entity-extraction = { group = "com.google.mlkit", name = "entity-extraction", version.ref = "entityExtraction" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
@@ -75,6 +92,8 @@ ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-animation-core = { group = "androidx.compose.animation", name = "animation-core", version.ref = "animationCore" }
+ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "uiTestJunit4" }
+ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "uiTestManifest" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

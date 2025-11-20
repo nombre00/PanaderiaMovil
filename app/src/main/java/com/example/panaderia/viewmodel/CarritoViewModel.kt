@@ -27,20 +27,20 @@ import com.example.panaderia.util.Notificationes
 
 // ViewModel maneja la logica de los estados, a eso se refieren cuando dicen que es el interlocutor entre la UI y Model.
 
-class CarritoViewModel : ViewModel() {
+open class CarritoViewModel : ViewModel() {
 
     // Primero necesitamos el estado de los envios.
-    private val _envios = MutableStateFlow<List<Envio>>(emptyList())
+    val _envios = MutableStateFlow<List<Envio>>(emptyList())
     val envio: StateFlow<List<Envio>> = _envios.asStateFlow()
     // Buscamos los carritos, estamos repitiendo lo de arriba con una lista en vez de un carrito para no desarmar otras funcionalidades.
-    private val _carritos = MutableStateFlow<List<Carrito>>(emptyList())
+    val _carritos = MutableStateFlow<List<Carrito>>(emptyList())
     val carritos: StateFlow<List<Carrito>> = _carritos.asStateFlow()
     // cliente ingresado
-    private val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
+    val _clienteIngresado = MutableStateFlow<Cliente>(Cliente(0,"","","","",null,emptyList()))
     val clienteIngresado: StateFlow<Cliente> = _clienteIngresado.asStateFlow()
 
     // Una trampa
-    private val _refresco = MutableStateFlow<Respuesta>(Respuesta(false))
+    val _refresco = MutableStateFlow<Respuesta>(Respuesta(false))
     val refresco: StateFlow<Respuesta> = _refresco
 
 
@@ -57,7 +57,7 @@ class CarritoViewModel : ViewModel() {
 
 
     // Cargar todos los carritos.
-    fun cargarCarritos(contexto: Context){
+    open fun cargarCarritos(contexto: Context){
         // Version local storage.
 
         // Corrutina
@@ -86,7 +86,7 @@ class CarritoViewModel : ViewModel() {
 
 
     // Filtrar el carrito del cliente.
-    fun filtrarCarritoCliente(idCliente: Int): Carrito{
+    open fun filtrarCarritoCliente(idCliente: Int): Carrito{
         // Version local storage
         val carritoCliente: Carrito = _carritos.value.find { it.idCliente == idCliente } ?: Carrito(0,0 ,mutableListOf<Producto>())
         return carritoCliente
@@ -121,7 +121,7 @@ class CarritoViewModel : ViewModel() {
 
 
     // Eliminamos un producto del carrito.
-    fun eliminarProductoCarrito(contexto: Context, productoID: Int, idCarrito: Int){
+    open fun eliminarProductoCarrito(contexto: Context, productoID: Int, idCarrito: Int){
 
         // Version local storage
         // Corrutina
@@ -196,7 +196,7 @@ class CarritoViewModel : ViewModel() {
 
     // Funcionalidad de comprar, afecta el carrito vaciandolo y genera un envio relacionado con el cliente.
     // Funcion que carga todos los envios del local storage.
-    fun cargarEnvios(contexto: Context){
+    open fun cargarEnvios(contexto: Context){
         // Version local storage
         /**
         // Corrutina.
@@ -223,7 +223,7 @@ class CarritoViewModel : ViewModel() {
 
 
     // Funcion que crea un nuevo envio, lo agrega al estado que contiene los envios y persiste en local storage.
-    fun comprar(contexto: Context, carritoCompra: Carrito) {
+    open fun comprar(contexto: Context, carritoCompra: Carrito) {
         // Version local storage
         // Acciones que tenemos que hacer.
         // Tomamos los datos del carrito: idCliente, productos
@@ -354,7 +354,7 @@ class CarritoViewModel : ViewModel() {
 
 
     // Carga el cliente ingresado. este se queda como está
-    fun cargarClienteIngresado(contexto: Context) {
+    open fun cargarClienteIngresado(contexto: Context) {
         // Corrutina
         viewModelScope.launch {
             leerClienteIngresado(contexto).collect { cliente ->
